@@ -9,8 +9,10 @@ package Controlador;
 import Modelo.profesionalDTO;
 import Modelo.areaDTO;
 import DAO.UsuarioDAO;
+import DAO.UsuarioEmpresaDAO;
 import DAO.areaDAO;
 import DAO.profesionalDAO;
+import Modelo.UsuarioempresaDTO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -19,8 +21,21 @@ import java.awt.event.MouseListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Vista.JFAdmin;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import java.sql.SQLException;
+import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -38,12 +53,14 @@ public final class Controlador_profesional extends javax.swing.JFrame implements
     //private profesionalDAO profesionalDAO;
        profesionalDAO profesionalDAO = new profesionalDAO();
        
-      
+     String Mensage = " su contraseña de ingreso al Sistema es la siguiente: ";
+    String To = "";
+    String Subject = "Su contraseña de acceso al sistema";
     public Controlador_profesional(JFAdmin vistaPrincipal, profesionalDAO profesionalDAO) {
        
 
         this.Vprofesional = vistaPrincipal;
-
+        UsuarioEmpresaDAO user = new UsuarioEmpresaDAO();
         //Objetos de acceso a datos
        
         this.profesionalDAO =profesionalDAO;
@@ -58,14 +75,46 @@ public final class Controlador_profesional extends javax.swing.JFrame implements
        llenarArea();
        
        listarProfesional();
+        
        
+    }
+    public void SendMail() {
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("empresasegurito@gmail.com", "clave123567");
+            }
+        });
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("empresasegurito@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(To));
+            message.setSubject(Subject);
+            message.setText(Mensage);
+
+            Transport.send(message);
+            JOptionPane.showMessageDialog(Vprofesional, "Su mensaje ha sido enviado");
+
+        } catch (MessagingException e) {
+            System.out.println(e);
+        }
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == Vprofesional.btn_guardarProfesional) {
-            
+            //validaciones del profesional
              if (!validarRut(Vprofesional.txt_prof_rut.getText())) {
                 JOptionPane.showMessageDialog(Vprofesional, "Debe ingresar un rut valido", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -84,29 +133,39 @@ public final class Controlador_profesional extends javax.swing.JFrame implements
             }  if (Vprofesional.txt_prof_apell.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(Vprofesional, "Debe ingresar apellido profesional", "Error", JOptionPane.ERROR_MESSAGE);
                  return;
-              
-
+            
             }  if (Vprofesional.txt_prof_teleono.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(Vprofesional, "Debe ingresar apellido profesional", "Error", JOptionPane.ERROR_MESSAGE);
                  return;
             }
+              if (Vprofesional.txt_prof_correo.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(Vprofesional, "Debe ingresar un correo", "Error", JOptionPane.ERROR_MESSAGE);
+                 return;
+            }
+               if (!isEmail(Vprofesional.txt_prof_correo.getText())) {
+                JOptionPane.showMessageDialog(Vprofesional, "Debe ingresar un correo valido", "Error", JOptionPane.ERROR_MESSAGE);
+                 return;
+            }
 
             try {
-
+                // se llenan lo campos 
                 String rut_pro = Vprofesional.txt_prof_rut.getText();
                 String nombre_pro = Vprofesional.txt_prof_nombre.getText();
                 String apell_pro = Vprofesional.txt_prof_apell.getText();
                 String telef_pro = Vprofesional.txt_prof_teleono.getText();
+               String prof_correo = Vprofesional.txt_prof_correo.getText();
               
-
+             
                 int estado;
                 if (Vprofesional.cmb_prof_estado.getSelectedIndex() == 0) {
                     estado = 0;
                 } else {
                     estado = 1;
                 }
+                //llenamos el area del profesional
                 areaDAO c = new areaDAO();
-                areaDTO comuna_local = c.leerRubro(Integer.parseInt(this.Vprofesional.cmb_area.getSelectedItem().toString().split("-")[0]));
+                areaDTO area = c.leerRubro(Integer.parseInt(this.Vprofesional.cmb_area.getSelectedItem().toString().split("-")[0]));
+                 //agregamos un profesional a la DB
                 profesionalDAO pr = new profesionalDAO();
                 profesionalDTO profesionaol = new profesionalDTO();
 
@@ -115,13 +174,39 @@ public final class Controlador_profesional extends javax.swing.JFrame implements
                 profesionaol.setProf_apell(apell_pro);
                 profesionaol.setProf_telefono(telef_pro);
                 profesionaol.setProf_estado((char) estado);
-                profesionaol.setProf_area_id(comuna_local);
-
+                profesionaol.setProf_area_id(area);
+                profesionaol.setProf_correo(prof_correo);
+               
+                
+                
+             //creamos la contraseña para el profesional
+               String pass = "" + nombre_pro.substring(0, 2) + "" + apell_pro.substring(0, 2) + "" + rut_pro.substring(0, 4);
+             //juntamos el nombre y el apellido del profesional
+               String nom_completo = nombre_pro+" "+apell_pro;
+             /*______________________________________________________________________________________________________________*/
+             //crearemos el usuario de profesional en la BD
+                UsuarioEmpresaDAO us = new UsuarioEmpresaDAO();
+                UsuarioempresaDTO ust = new UsuarioempresaDTO();
+               String rut = null;
+                ust.setUser_rut(rut_pro);
+                ust.setUser_name(nom_completo);
+                ust.setUser_correo(prof_correo);
+                //se encripta la contraseña del usuario profesional
+                ust.setUser_pass(getMD5(pass));
+                ust.setActivo((char) estado);
+                ust.setRol("Profesional");
+                
+                 if ( us.crearUsuarioEmpresa(ust)==1) {
+                       To = prof_correo;// valor es de prueba valores de prueb
+                        Mensage += " " + pass ; // valor es de prueba valores de prueb
+                        this.SendMail();
+                        JOptionPane.showMessageDialog(Vprofesional, "se ha creado usuario profesional", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                
                 if (pr.crearProfesional(profesionaol) == 1) {
                     JOptionPane.showMessageDialog(Vprofesional, "Se ha creado una profesional", "Exito", JOptionPane.INFORMATION_MESSAGE);
                    listarProfesional();
-
-                    
+                  
                 } else {
                     JOptionPane.showMessageDialog(Vprofesional, "No se ha podido agregar profesional", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -152,17 +237,22 @@ public final class Controlador_profesional extends javax.swing.JFrame implements
             }  if (Vprofesional.txt_prof_teleono.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(Vprofesional, "Debe ingresar apellido profesional", "Error", JOptionPane.ERROR_MESSAGE);
                  return;
-               
-
             } 
-
+                if (Vprofesional.txt_prof_correo.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(Vprofesional, "Debe ingresar un correo", "Error", JOptionPane.ERROR_MESSAGE);
+                 return;
+            }
+               if (!isEmail(Vprofesional.txt_prof_correo.getText())) {
+                JOptionPane.showMessageDialog(Vprofesional, "Debe ingresar un correo valido", "Error", JOptionPane.ERROR_MESSAGE);
+                 return;
+            }
             try {
 
                 String rut_pro = Vprofesional.txt_prof_rut.getText();
                 String nombre_pro = Vprofesional.txt_prof_nombre.getText();
                 String apell_pro = Vprofesional.txt_prof_apell.getText();
                 String telef_pro = Vprofesional.txt_prof_teleono.getText();
-                
+                String prof_correo = Vprofesional.txt_prof_correo.getText();
 
                 int estado;
                 if (Vprofesional.cmb_prof_estado.getSelectedIndex() == 0) {
@@ -171,7 +261,7 @@ public final class Controlador_profesional extends javax.swing.JFrame implements
                     estado = 1;
                 }
                 areaDAO c = new areaDAO();
-                areaDTO comuna_local = c.leerRubro(Integer.parseInt(this.Vprofesional.cmb_area.getSelectedItem().toString().split("-")[0]));
+                areaDTO area = c.leerRubro(Integer.parseInt(this.Vprofesional.cmb_area.getSelectedItem().toString().split("-")[0]));
                 profesionalDAO pr = new profesionalDAO();
                 profesionalDTO profesionaol = new profesionalDTO();
 
@@ -180,8 +270,8 @@ public final class Controlador_profesional extends javax.swing.JFrame implements
                 profesionaol.setProf_apell(apell_pro);
                 profesionaol.setProf_telefono(telef_pro);
                 profesionaol.setProf_estado((char) estado);
-                profesionaol.setProf_area_id(comuna_local);
-
+                profesionaol.setProf_area_id(area);
+                profesionaol.setProf_correo(prof_correo);
                 if (pr.ModificarProfesional(profesionaol) == 1) {
                     JOptionPane.showMessageDialog(Vprofesional, "Se ha modificado una profesional", "Exito", JOptionPane.INFORMATION_MESSAGE);
                    
@@ -220,14 +310,17 @@ public final class Controlador_profesional extends javax.swing.JFrame implements
                 String nombre = Vprofesional.tabla_profesional.getValueAt(Vprofesional.tabla_profesional.getSelectedRow(), 1).toString();
                 String apell = Vprofesional.tabla_profesional.getValueAt(Vprofesional.tabla_profesional.getSelectedRow(), 2).toString();
                 String telefono = Vprofesional.tabla_profesional.getValueAt(Vprofesional.tabla_profesional.getSelectedRow(), 3).toString();
-                String areaid = Vprofesional.tabla_profesional.getValueAt(Vprofesional.tabla_profesional.getSelectedRow(), 4).toString();
-                String estado = Vprofesional.tabla_profesional.getValueAt(Vprofesional.tabla_profesional.getSelectedRow(), 5).toString();
+                String correo = Vprofesional.tabla_profesional.getValueAt(Vprofesional.tabla_profesional.getSelectedRow(), 4).toString();
+                String areaid = Vprofesional.tabla_profesional.getValueAt(Vprofesional.tabla_profesional.getSelectedRow(), 5).toString();
+                String estado = Vprofesional.tabla_profesional.getValueAt(Vprofesional.tabla_profesional.getSelectedRow(), 6).toString();
 
                 Vprofesional.txt_prof_rut.setText(rut_profesional);
                 Vprofesional.txt_prof_nombre.setText(nombre);
                 Vprofesional.txt_prof_apell.setText(apell);
                 Vprofesional.txt_prof_teleono.setText(telefono);
+                Vprofesional.txt_prof_correo.setText(correo);
                 Vprofesional.cmb_area.setSelectedItem(areaid);
+                
                 if ("Activo".equals(estado)) {
                     Vprofesional.cmb_prof_estado.setSelectedIndex(1);
                 } else {
@@ -256,13 +349,28 @@ public final class Controlador_profesional extends javax.swing.JFrame implements
     public void mouseExited(MouseEvent me) {
 
     }
-    
+                public static String getMD5(String input) {
+             try {
+             MessageDigest md = MessageDigest.getInstance("MD5");
+             byte[] messageDigest = md.digest(input.getBytes());
+             BigInteger number = new BigInteger(1, messageDigest);
+             String hashtext = number.toString(16);
+
+             while (hashtext.length() < 32) {
+             hashtext = "0" + hashtext;
+             }
+             return hashtext;
+             }
+             catch (NoSuchAlgorithmException e) {
+             throw new RuntimeException(e);
+             }
+             }
     
       private void  buscarprofesional(String rut) {
         DefaultTableModel modelo = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int fila, int columna) {
-                if (columna > 6) {
+                if (columna > 7) {
                     return true;
                 }
                 return false;
@@ -273,23 +381,25 @@ public final class Controlador_profesional extends javax.swing.JFrame implements
         modelo.addColumn("Nombre");
         modelo.addColumn("Apellido");
         modelo.addColumn("Telefono");
+        modelo.addColumn("correo");
         modelo.addColumn("area");
         modelo.addColumn("Estado");
 
         profesionalDAO ca = new profesionalDAO();
         for (profesionalDTO a : ca.listarProfesional()) {
   if (rut.equalsIgnoreCase(a.getProf_rut())){
-            Object[] fila = new Object[6]; // cantidad de final
+            Object[] fila = new Object[7]; // cantidad de final
             fila[0] = a.getProf_rut(); // debe partirn en eso 0s
             fila[1] = a.getProf_nombre();
             fila[2] = a.getProf_apell();
             fila[3] = a.getProf_telefono();
-            fila[4] = a.getProf_area_id();
+            fila[4] = a.getProf_correo();
+            fila[5] = a.getProf_area_id();
             
             if (a.getProf_estado() == 0) {
-                fila[5] = "Inactivo";
+                fila[6] = "Inactivo";
             } else {
-                fila[5] = "Activo";
+                fila[6] = "Activo";
             }
             modelo.addRow(fila);
         }
@@ -304,7 +414,7 @@ public final class Controlador_profesional extends javax.swing.JFrame implements
         DefaultTableModel modelo = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int fila, int columna) {
-                if (columna > 6) {
+                if (columna > 7) {
                     return true;
                 }
                 return false;
@@ -315,25 +425,27 @@ public final class Controlador_profesional extends javax.swing.JFrame implements
         modelo.addColumn("Nombre");
         modelo.addColumn("Apellido");
         modelo.addColumn("Telefono");
+        modelo.addColumn("correo");
         modelo.addColumn("area");
         modelo.addColumn("Estado");
 
         profesionalDAO ca = new profesionalDAO();
         for (profesionalDTO a : ca.listarProfesional()) {
-
-            Object[] fila = new Object[6]; // cantidad de final
+        Object[] fila = new Object[7]; // cantidad de final
             fila[0] = a.getProf_rut(); // debe partirn en eso 0s
             fila[1] = a.getProf_nombre();
             fila[2] = a.getProf_apell();
             fila[3] = a.getProf_telefono();
-            fila[4] = a.getProf_area_id();
+            fila[4] = a.getProf_correo();
+            fila[5] = a.getProf_area_id();
             
             if (a.getProf_estado() == 0) {
-                fila[5] = "Inactivo";
+                fila[6] = "Inactivo";
             } else {
-                fila[5] = "Activo";
+                fila[6] = "Activo";
             }
             modelo.addRow(fila);
+            
         }
 
         Vprofesional.tabla_profesional.setModel(modelo);
@@ -360,7 +472,18 @@ public final class Controlador_profesional extends javax.swing.JFrame implements
         Vprofesional.btn_modificar_profesional.setEnabled(false);
         Vprofesional.txt_prof_rut.requestFocus();
     }
-   
+   public boolean isEmail(String correo) {
+        Pattern pat = null;
+        Matcher mat = null;        
+        pat = Pattern.compile("^([0-9a-zA-Z]([_.w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-w]*[0-9a-zA-Z].)+([a-zA-Z]{2,9}.)+[a-zA-Z]{2,3})$");
+        mat = pat.matcher(correo);
+        if (mat.find()) {
+            System.out.println("[" + mat.group() + "]");
+            return true;
+        }else{
+            return false;
+        }        
+    }
 
     public void llenarCombos() {
         Vprofesional.cmb_prof_estado.addItem("Inactivo");

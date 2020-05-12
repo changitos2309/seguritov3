@@ -19,8 +19,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import Vista.JFAdmin;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.beans.Visibility;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.table.DefaultTableModel;
@@ -32,6 +40,8 @@ public class Controlador_Empresa extends javax.swing.JFrame implements ActionLis
     private JFAdmin vistaPrincipal = new JFAdmin();
 
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
+    
+    
 
     public Controlador_Empresa(JFAdmin vistaPrincipal, UsuarioDAO UsuarioDAO) {
 
@@ -56,7 +66,8 @@ public class Controlador_Empresa extends javax.swing.JFrame implements ActionLis
         listarEmpresa();
         limpiarlistarEmpresas();
     }
-
+    
+ 
     @Override
     public void actionPerformed(ActionEvent e) {
         /*aqui enpiea las funciones del controlador de empresa */
@@ -122,6 +133,7 @@ public class Controlador_Empresa extends javax.swing.JFrame implements ActionLis
                 empresa.setEmpTrabajadores(canttrabajadores);
                 /*se crea la empresa*/
                 if (ce.crearEmpresa(empresa) == 1) {
+                    
                     JOptionPane.showMessageDialog(vistaPrincipal, "Se ha creado una empresa", "Exito", JOptionPane.INFORMATION_MESSAGE);
                     /*llenamos el combo de estado*/
                     llenarCombos();
