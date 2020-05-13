@@ -27,7 +27,7 @@ public class profesionalDAO {
         int resultado = 0;
         Connection dbConnection;
         CallableStatement callableStatement;
-        String crearsql = "{call SGT_PROFESIONAL.PRO_CREAR_PROFESIONAL(?,?,?,?,?,?)}";
+        String crearsql = "{call SGT_PROFESIONAL.PRO_CREAR_PROFESIONAL(?,?,?,?,?,?,?)}";
         try {
             dbConnection = Conexion.getConnection();
             callableStatement = dbConnection.prepareCall(crearsql);
@@ -38,6 +38,7 @@ public class profesionalDAO {
             callableStatement.setInt(4, (int) profesional.getProf_estado());
             callableStatement.setString(5, profesional.getProf_telefono());
              callableStatement.setInt(6, (int) profesional.getProf_area_id().getArea_id());
+             callableStatement.setString(7,  profesional.getProf_correo());
            
 
             // execute getDBUSERCursor store procedure
@@ -55,7 +56,7 @@ public class profesionalDAO {
         int resultado = 0;
         Connection dbConnection;
         CallableStatement callableStatement;
-        String crearsql = "{call SGT_PROFESIONAL.PRO_MODIFICAR_PROFESIONAL(?,?,?,?,?,?)}";
+        String crearsql = "{call SGT_PROFESIONAL.PRO_MODIFICAR_PROFESIONAL(?,?,?,?,?,?,?)}";
         try {
             dbConnection = Conexion.getConnection();
             callableStatement = dbConnection.prepareCall(crearsql);
@@ -66,6 +67,7 @@ public class profesionalDAO {
             callableStatement.setInt(4, (int) profesional.getProf_estado());
             callableStatement.setString(5, profesional.getProf_telefono());
              callableStatement.setInt(6, (int) profesional.getProf_area_id().getArea_id());
+              callableStatement.setString(7,  profesional.getProf_correo());
             
             // execute getDBUSERCursor store procedure
             int rowsInserted = callableStatement.executeUpdate();
@@ -98,9 +100,10 @@ public class profesionalDAO {
                 a.setProf_nombre(rs.getString(2));
                 a.setProf_apell(rs.getString(3));
                 a.setProf_telefono(rs.getString(4));
+                 a.setProf_correo(rs.getString(5));
                 areaDAO p = new areaDAO();
-                a.setProf_area_id(p.leerRubro(rs.getInt(5)));
-                a.setProf_estado((char) rs.getInt(6));
+                a.setProf_area_id(p.leerRubro(rs.getInt(6)));
+                a.setProf_estado((char) rs.getInt(7));
 
                 list.add(a);
             }
