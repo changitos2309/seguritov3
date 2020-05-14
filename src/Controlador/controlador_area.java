@@ -17,6 +17,9 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -34,6 +37,7 @@ public class controlador_area extends javax.swing.JFrame implements ActionListen
         vistaarea.btn_guardarprofesion.addActionListener(this);
         
          int ar = 0;
+         listararea();
     }
      
      
@@ -106,30 +110,58 @@ public class controlador_area extends javax.swing.JFrame implements ActionListen
     
     
     
-    
+    private void listararea() {
+        DefaultTableModel modelo = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int fila, int columna) {
+                if (columna > 2) {
+                    return true;
+                }
+                return false;
+            }
+        };
+        // System.out.println("Destino get data");
+        modelo.addColumn("ID");
+        modelo.addColumn("Profesion");
+       
+       
+        areaDAO ar = new areaDAO();
+      
+        for (areaDTO a : ar.listarRubros()) {
+
+            Object[] fila = new Object[2]; // Hay tres columnas en la tabla
+             fila[0] = a.getArea_id();
+            fila[1] = a.getArea_detalle(); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
+           modelo.addRow(fila);
+        }
+
+        vistaarea.tabla_area.setModel(modelo);
+        TableRowSorter<TableModel> elQueOrdena = new TableRowSorter<TableModel>(modelo);
+        vistaarea.tabla_area.setRowSorter(elQueOrdena);
+    }
     @Override
     public void mouseClicked(MouseEvent me) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public void mousePressed(MouseEvent me) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       
     }
 
     @Override
     public void mouseReleased(MouseEvent me) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+ 
     }
 
     @Override
     public void mouseEntered(MouseEvent me) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       
     }
 
     @Override
     public void mouseExited(MouseEvent me) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       
     }
     
 }

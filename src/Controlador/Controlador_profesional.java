@@ -192,7 +192,7 @@ public final class Controlador_profesional extends javax.swing.JFrame implements
                 ust.setUser_name(nom_completo);
                 ust.setUser_correo(prof_correo);
                 //se encripta la contraseña del usuario profesional
-                ust.setUser_pass(getMD5(pass));
+                ust.setUser_pass(encriptaEnMD5(pass));
                 ust.setActivo((char) estado);
                 ust.setRol("Profesional");
                 
@@ -276,8 +276,7 @@ public final class Controlador_profesional extends javax.swing.JFrame implements
                     JOptionPane.showMessageDialog(Vprofesional, "Se ha modificado una profesional", "Exito", JOptionPane.INFORMATION_MESSAGE);
                    
                    listarProfesional();
-                  
-                } else {
+                    } else {
                     JOptionPane.showMessageDialog(Vprofesional, "No se ha podido modificar el profesional profesional", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (SQLException ex) {
@@ -349,22 +348,57 @@ public final class Controlador_profesional extends javax.swing.JFrame implements
     public void mouseExited(MouseEvent me) {
 
     }
-                public static String getMD5(String input) {
-             try {
-             MessageDigest md = MessageDigest.getInstance("MD5");
-             byte[] messageDigest = md.digest(input.getBytes());
-             BigInteger number = new BigInteger(1, messageDigest);
-             String hashtext = number.toString(16);
-
-             while (hashtext.length() < 32) {
-             hashtext = "0" + hashtext;
-             }
-             return hashtext;
-             }
-             catch (NoSuchAlgorithmException e) {
-             throw new RuntimeException(e);
-             }
-             }
+               
+                
+//                public static String getMd5(String input) { 
+//        try { 
+//  
+//            // Static getInstance method is called with hashing MD5 
+//            MessageDigest md = MessageDigest.getInstance("MD5"); 
+//  
+//            // digest() method is called to calculate message digest 
+//            //  of an input digest() return array of byte 
+//            byte[] messageDigest = md.digest(input.getBytes()); 
+//  
+//            // Convert byte array into signum representation 
+//            BigInteger no = new BigInteger(1, messageDigest); 
+//  
+//            // Convert message digest into hex value 
+//            String hashtext = no.toString(16); 
+//            while (hashtext.length() < 32) { 
+//                hashtext = "0" + hashtext; 
+//            } 
+//            return hashtext; 
+//        }  
+//        
+//        
+//  
+//        // For specifying wrong message digest algorithms 
+//        catch (NoSuchAlgorithmException e) { 
+//            throw new RuntimeException(e); 
+//        } 
+//    }
+                
+                 private static final char[] CONSTS_HEX = { '0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f' };
+    public static String encriptaEnMD5(String stringAEncriptar)
+    {
+        try
+        {
+           MessageDigest msgd = MessageDigest.getInstance("MD5");
+           byte[] bytes = msgd.digest(stringAEncriptar.getBytes());
+           StringBuilder strbCadenaMD5 = new StringBuilder(2 * bytes.length);
+           for (int i = 0; i < bytes.length; i++)
+           {
+               int bajo = (int)(bytes[i] & 0x0f);
+               int alto = (int)((bytes[i] & 0xf0) >> 4);
+               strbCadenaMD5.append(CONSTS_HEX[alto]);
+               strbCadenaMD5.append(CONSTS_HEX[bajo]);
+           }
+           return strbCadenaMD5.toString();
+        } catch (NoSuchAlgorithmException e) {
+           return null;
+        }
+    }
     
       private void  buscarprofesional(String rut) {
         DefaultTableModel modelo = new DefaultTableModel() {
@@ -437,7 +471,7 @@ public final class Controlador_profesional extends javax.swing.JFrame implements
             fila[2] = a.getProf_apell();
             fila[3] = a.getProf_telefono();
             fila[4] = a.getProf_correo();
-            fila[5] = a.getProf_area_id();
+            fila[5] = a.getProf_area_id().getArea_id()+"-"+a.getProf_area_id().getArea_detalle();
             
             if (a.getProf_estado() == 0) {
                 fila[6] = "Inactivo";
@@ -457,7 +491,7 @@ public final class Controlador_profesional extends javax.swing.JFrame implements
         Vprofesional.cmb_area.removeAllItems();
         Vprofesional.cmb_area.removeAllItems();
         for (areaDTO a : ca.listarRubros()) {
-            Vprofesional.cmb_area.addItem(a.getArea_id() + "-" + a.getArea_detalle());
+            Vprofesional.cmb_area.addItem(a.getArea_id()+"-"+a.getArea_detalle());
 
         }
     }

@@ -33,7 +33,11 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 import static Vista.JFlogin.Instancia;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.Util;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -131,7 +135,7 @@ public class Controlador_servicio extends javax.swing.JFrame implements ActionLi
             try {
 
                 String ser_nom = vistaPrincipal.txt_servicio_nombre.getText();
-                int ser_valor = Integer.parseInt(vistaPrincipal.txt_servicio_valor.getText());
+                int ser_valor = Integer.parseInt(vistaPrincipal.txt_servicio_valor.getText().replaceAll("\\.", ""));
 
                 int estado;
                 if (vistaPrincipal.cmb_estado_serv.getSelectedIndex() == 0) {
@@ -193,16 +197,16 @@ public class Controlador_servicio extends javax.swing.JFrame implements ActionLi
         modelo.addColumn("ID");
         modelo.addColumn("servicio");
         modelo.addColumn("valor");
-        modelo.addColumn("activo");
-        
-
+        modelo.addColumn("Estado");
+       
         servicioDAO ca = new servicioDAO();
+        DecimalFormat formatea = new DecimalFormat("###,###.##");
         for (servicioDTO a : ca.listarServicio()) {
 
             Object[] fila = new Object[4]; // Hay tres columnas en la tabla
              fila[0] = a.getSer_id();
             fila[1] = a.getSer_nombre(); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
-            fila[2] = a.getSer_valor();
+            fila[2] = formatea.format(a.getSer_valor());
                  
             if (a.getSer_activo()== 0) {
                 fila[3] = "Inactivo";
@@ -213,6 +217,13 @@ public class Controlador_servicio extends javax.swing.JFrame implements ActionLi
         }
 
         vistaPrincipal.tabla_servicio.setModel(modelo);
+        DefaultTableCellRenderer Alinear = new DefaultTableCellRenderer();
+        DefaultTableCellRenderer Alinear2 = new DefaultTableCellRenderer();
+        Alinear.setHorizontalAlignment(SwingConstants.CENTER);
+        Alinear2.setHorizontalAlignment(SwingConstants.RIGHT);
+        vistaPrincipal.tabla_servicio.getColumnModel().getColumn(3).setCellRenderer(Alinear);
+         vistaPrincipal.tabla_servicio.getColumnModel().getColumn(2).setCellRenderer(Alinear2);
+         
         TableRowSorter<TableModel> elQueOrdena = new TableRowSorter<TableModel>(modelo);
         vistaPrincipal.tabla_servicio.setRowSorter(elQueOrdena);
     }
@@ -236,11 +247,11 @@ public class Controlador_servicio extends javax.swing.JFrame implements ActionLi
         servicioDAO ca = new servicioDAO();
         for (servicioDTO a : ca.listarServicio()) {
             if (nombre.equalsIgnoreCase(a.getSer_nombre())) {
-         
+         DecimalFormat formatea = new DecimalFormat("###,###.##");
             Object[] fila = new Object[4]; // Hay tres columnas en la tabla
              fila[0] = a.getSer_id();
             fila[1] = a.getSer_nombre(); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
-            fila[2] = a.getSer_valor();
+            fila[2] = formatea.format(a.getSer_valor());
                  
             if (a.getSer_activo()== 0) {
                 fila[3] = "Inactivo";
@@ -266,6 +277,7 @@ public class Controlador_servicio extends javax.swing.JFrame implements ActionLi
 
     @Override
     public void mouseClicked(MouseEvent me) {
+         
         if (me.getSource() == vistaPrincipal.tabla_servicio) {
             int filaSeleccionada = vistaPrincipal.tabla_servicio.getSelectedRow();
             if (filaSeleccionada >= 0) {
@@ -274,11 +286,11 @@ public class Controlador_servicio extends javax.swing.JFrame implements ActionLi
              vistaPrincipal.txt_servicio_nombre.setEnabled(false);
              id_servicio =  Integer.parseInt(vistaPrincipal.tabla_servicio.getValueAt(vistaPrincipal.tabla_servicio.getSelectedRow(), 0).toString());
                 String nombre_ser = vistaPrincipal.tabla_servicio.getValueAt(vistaPrincipal.tabla_servicio.getSelectedRow(), 1).toString();
-                int valor = Integer.parseInt(vistaPrincipal.tabla_servicio.getValueAt(vistaPrincipal.tabla_servicio.getSelectedRow(), 2).toString());
+                String valor = vistaPrincipal.tabla_servicio.getValueAt(vistaPrincipal.tabla_servicio.getSelectedRow(), 2).toString();
                 String estado = vistaPrincipal.tabla_servicio.getValueAt(vistaPrincipal.tabla_servicio.getSelectedRow(), 3).toString();
 
                 vistaPrincipal.txt_servicio_nombre.setText(nombre_ser);
-                vistaPrincipal.txt_servicio_valor.setText(""+valor);
+                vistaPrincipal.txt_servicio_valor.setText(valor);
        
                 if ("Activo".equals(estado)) {
                     vistaPrincipal.cmb_estado_serv.setSelectedIndex(1);

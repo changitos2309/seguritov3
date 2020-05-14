@@ -99,8 +99,6 @@ public class JFAdmin extends javax.swing.JFrame {
         tabla_servicio = new javax.swing.JTable();
         btn_buscar_servicio = new javax.swing.JButton();
         JPcontrato = new javax.swing.JPanel();
-        txt_fecha_terminar = new javax.swing.JTextField();
-        txt_fecha_inicio = new javax.swing.JTextField();
         cmb_contr_empresa = new javax.swing.JComboBox<>();
         cmb_contr_estado = new javax.swing.JComboBox<>();
         jLabel33 = new javax.swing.JLabel();
@@ -116,10 +114,12 @@ public class JFAdmin extends javax.swing.JFrame {
         cmb_contr_profesional = new javax.swing.JComboBox<>();
         jLabel39 = new javax.swing.JLabel();
         btn_buscar_contrato = new javax.swing.JButton();
+        txt_fecha_terminar = new com.toedter.calendar.JDateChooser();
+        txt_fecha_inicio = new com.toedter.calendar.JDateChooser();
         JPprofesion = new javax.swing.JPanel();
         txt_profesion_nombre = new javax.swing.JTextField();
         jScrollPane12 = new javax.swing.JScrollPane();
-        tabla_contrato1 = new javax.swing.JTable();
+        tabla_area = new javax.swing.JTable();
         btn_guardarprofesion = new javax.swing.JButton();
         btn_modificar_profesion = new javax.swing.JButton();
         btn_limpiar_profesion = new javax.swing.JButton();
@@ -148,7 +148,6 @@ public class JFAdmin extends javax.swing.JFrame {
         btn_buscar_empresa = new javax.swing.JButton();
         btn_limpiarContrato1 = new javax.swing.JButton();
         JPasesoria = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
         jLabel42 = new javax.swing.JLabel();
         jLabel43 = new javax.swing.JLabel();
         cmb_realizada = new javax.swing.JComboBox<>();
@@ -160,7 +159,8 @@ public class JFAdmin extends javax.swing.JFrame {
         btn_modificar_asesoria = new javax.swing.JButton();
         btn_limpiar_asesoria = new javax.swing.JButton();
         jScrollPane10 = new javax.swing.JScrollPane();
-        tabla_profesional1 = new javax.swing.JTable();
+        tabla_asesoria = new javax.swing.JTable();
+        txt_ases_fecha = new com.toedter.calendar.JDateChooser();
 
         jTextField2.setText("jTextField2");
 
@@ -834,12 +834,6 @@ public class JFAdmin extends javax.swing.JFrame {
 
         JPcontrato.setBackground(new java.awt.Color(255, 255, 255));
 
-        txt_fecha_terminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_fecha_terminarActionPerformed(evt);
-            }
-        });
-
         jLabel33.setText("Fecha inicio");
 
         jLabel34.setText("Fecha termino");
@@ -920,35 +914,34 @@ public class JFAdmin extends javax.swing.JFrame {
         JPcontratoLayout.setHorizontalGroup(
             JPcontratoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPcontratoLayout.createSequentialGroup()
-                .addGap(48, 48, 48)
+                .addGap(42, 42, 42)
                 .addGroup(JPcontratoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(JPcontratoLayout.createSequentialGroup()
-                        .addComponent(jLabel33)
-                        .addGap(31, 31, 31)
-                        .addComponent(txt_fecha_inicio, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(56, 56, 56)
-                        .addComponent(jLabel34)
-                        .addGap(32, 32, 32)
-                        .addComponent(txt_fecha_terminar, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(JPcontratoLayout.createSequentialGroup()
                         .addComponent(jLabel35)
-                        .addGap(18, 18, 18)
+                        .addGap(24, 24, 24)
                         .addComponent(cmb_contr_empresa, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel39)
                         .addGap(18, 18, 18)
                         .addComponent(cmb_contr_profesional, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(JPcontratoLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel36)
+                        .addComponent(jLabel33)
                         .addGap(18, 18, 18)
-                        .addComponent(cmb_contr_estado, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txt_fecha_inicio, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(43, 43, 43)
+                        .addComponent(jLabel34)
+                        .addGap(18, 18, 18)
+                        .addComponent(txt_fecha_terminar, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(98, 98, 98)
+                        .addComponent(jLabel36)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cmb_contr_estado, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(52, 52, 52))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPcontratoLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(29, 29, 29)
                 .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 717, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52)
+                .addGap(41, 41, 41)
                 .addGroup(JPcontratoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btn_modificar_contrato, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btn_limpiar_contrato, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -960,51 +953,43 @@ public class JFAdmin extends javax.swing.JFrame {
         JPcontratoLayout.setVerticalGroup(
             JPcontratoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPcontratoLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(JPcontratoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel35)
+                    .addComponent(cmb_contr_empresa, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel39)
+                    .addComponent(cmb_contr_profesional, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
+                .addGroup(JPcontratoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(JPcontratoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cmb_contr_estado, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel36))
+                    .addComponent(jLabel34)
+                    .addComponent(jLabel33)
+                    .addComponent(txt_fecha_terminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_fecha_inicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(67, 67, 67)
                 .addGroup(JPcontratoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(JPcontratoLayout.createSequentialGroup()
-                        .addGap(113, 113, 113)
-                        .addGroup(JPcontratoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel33)
-                            .addComponent(txt_fecha_inicio, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel34)
-                            .addComponent(txt_fecha_terminar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(JPcontratoLayout.createSequentialGroup()
-                        .addGroup(JPcontratoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(JPcontratoLayout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addGroup(JPcontratoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel35)
-                                    .addComponent(cmb_contr_empresa, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel39)
-                                    .addComponent(cmb_contr_profesional, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(24, 24, 24)
-                                .addComponent(cmb_contr_estado, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(63, 63, 63))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPcontratoLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel36)
-                                .addGap(68, 68, 68)))
-                        .addGroup(JPcontratoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(JPcontratoLayout.createSequentialGroup()
-                                .addComponent(btn_guardarcontrato, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btn_modificar_contrato, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btn_limpiar_contrato, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btn_generar_contrato, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btn_buscar_contrato, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                .addContainerGap(28, Short.MAX_VALUE))
+                        .addComponent(btn_guardarcontrato, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_modificar_contrato, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_limpiar_contrato, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_generar_contrato, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_buscar_contrato, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
 
         JPinicial.add(JPcontrato, "card5");
 
         JPprofesion.setBackground(new java.awt.Color(255, 255, 255));
 
-        tabla_contrato1.setBorder(new javax.swing.border.MatteBorder(null));
-        tabla_contrato1.setModel(new javax.swing.table.DefaultTableModel(
+        tabla_area.setBorder(new javax.swing.border.MatteBorder(null));
+        tabla_area.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -1015,12 +1000,12 @@ public class JFAdmin extends javax.swing.JFrame {
 
             }
         ));
-        tabla_contrato1.addMouseListener(new java.awt.event.MouseAdapter() {
+        tabla_area.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabla_contrato1MouseClicked(evt);
+                tabla_areaMouseClicked(evt);
             }
         });
-        jScrollPane12.setViewportView(tabla_contrato1);
+        jScrollPane12.setViewportView(tabla_area);
 
         btn_guardarprofesion.setBackground(new java.awt.Color(46, 61, 94));
         btn_guardarprofesion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -1356,8 +1341,8 @@ public class JFAdmin extends javax.swing.JFrame {
         btn_limpiar_asesoria.setForeground(new java.awt.Color(255, 255, 255));
         btn_limpiar_asesoria.setText("Limpiar");
 
-        tabla_profesional1.setBorder(new javax.swing.border.MatteBorder(null));
-        tabla_profesional1.setModel(new javax.swing.table.DefaultTableModel(
+        tabla_asesoria.setBorder(new javax.swing.border.MatteBorder(null));
+        tabla_asesoria.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -1368,12 +1353,12 @@ public class JFAdmin extends javax.swing.JFrame {
 
             }
         ));
-        tabla_profesional1.addMouseListener(new java.awt.event.MouseAdapter() {
+        tabla_asesoria.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabla_profesional1MouseClicked(evt);
+                tabla_asesoriaMouseClicked(evt);
             }
         });
-        jScrollPane10.setViewportView(tabla_profesional1);
+        jScrollPane10.setViewportView(tabla_asesoria);
 
         javax.swing.GroupLayout JPasesoriaLayout = new javax.swing.GroupLayout(JPasesoria);
         JPasesoria.setLayout(JPasesoriaLayout);
@@ -1384,9 +1369,9 @@ public class JFAdmin extends javax.swing.JFrame {
                 .addGroup(JPasesoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(JPasesoriaLayout.createSequentialGroup()
                         .addComponent(jLabel42)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(69, 69, 69)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txt_ases_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(61, 61, 61)
                         .addComponent(jLabel43)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cmb_realizada, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1411,13 +1396,14 @@ public class JFAdmin extends javax.swing.JFrame {
             JPasesoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPasesoriaLayout.createSequentialGroup()
                 .addGap(54, 54, 54)
-                .addGroup(JPasesoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel42)
-                    .addComponent(jLabel43)
-                    .addComponent(cmb_realizada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmb_empresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel44))
+                .addGroup(JPasesoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(JPasesoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel42)
+                        .addComponent(jLabel43)
+                        .addComponent(cmb_realizada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmb_empresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel44))
+                    .addComponent(txt_ases_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(JPasesoriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmb_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1604,13 +1590,9 @@ public class JFAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_generar_contratoActionPerformed
 
-    private void txt_fecha_terminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_fecha_terminarActionPerformed
+    private void tabla_areaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabla_areaMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_fecha_terminarActionPerformed
-
-    private void tabla_contrato1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabla_contrato1MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tabla_contrato1MouseClicked
+    }//GEN-LAST:event_tabla_areaMouseClicked
 
     private void btn_guardarprofesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarprofesionActionPerformed
         // TODO add your handling code here:
@@ -1672,9 +1654,9 @@ public class JFAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_modificar_asesoriaActionPerformed
 
-    private void tabla_profesional1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabla_profesional1MouseClicked
+    private void tabla_asesoriaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabla_asesoriaMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_tabla_profesional1MouseClicked
+    }//GEN-LAST:event_tabla_asesoriaMouseClicked
 
     private void JPMasesoriaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JPMasesoriaMouseClicked
          Color clr1 = new Color(54, 78, 135);
@@ -1833,20 +1815,20 @@ public class JFAdmin extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    public javax.swing.JTable tabla_area;
+    public javax.swing.JTable tabla_asesoria;
     public javax.swing.JTable tabla_contrato;
-    public javax.swing.JTable tabla_contrato1;
     public javax.swing.JTable tabla_empresa;
     public javax.swing.JTable tabla_profesional;
-    public javax.swing.JTable tabla_profesional1;
     public javax.swing.JTable tabla_servicio;
     public javax.swing.JTextField txt_Empresa_rut;
     public javax.swing.JTextField txt_Nombre_empresa;
+    public com.toedter.calendar.JDateChooser txt_ases_fecha;
     public javax.swing.JTextField txt_cantrabajadores;
     public javax.swing.JTextField txt_direccion_empresa;
-    public javax.swing.JTextField txt_fecha_inicio;
-    public javax.swing.JTextField txt_fecha_terminar;
+    public com.toedter.calendar.JDateChooser txt_fecha_inicio;
+    public com.toedter.calendar.JDateChooser txt_fecha_terminar;
     public javax.swing.JTextField txt_prof_apell;
     public javax.swing.JTextField txt_prof_correo;
     public javax.swing.JTextField txt_prof_nombre;
