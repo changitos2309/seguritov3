@@ -6,13 +6,11 @@
 package DAO;
 
 import Modelo.VisitaDTO;
-import Modelo.asesoriaDTO;
 import conexion.Conexion;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,24 +22,31 @@ import oracle.jdbc.OracleTypes;
  *
  * @author TKG
  */
-public class asesoriaDAO {
-     public int crearasesoria(asesoriaDTO asesoria) throws SQLException {
+public class VisitaDAO {
+
+    public VisitaDAO() {
+    }
+    
+    public int crearvisita(VisitaDTO visita) throws SQLException {
         int resultado = 0;
         Connection dbConnection;
         CallableStatement callableStatement;
-        String crearsql = "{call SGT_ASESORIA.PRO_CREAR_ASESORIA(?,?,?,?,?)}";
+        String crearsql = "{call SGT_VISITA.PRO_CREAR_VISTA(?,?,?,?,?,?,?)}";
         try {
             dbConnection = Conexion.getConnection();
             callableStatement = dbConnection.prepareCall(crearsql);
             DateFormat oDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            
+            DateFormat oDateFormatt = new SimpleDateFormat("HH:mm");
+            callableStatement.setInt(1, visita.getId_vista());
+            String fecha_visita = oDateFormat.format(visita.getFecha_visita());
+            callableStatement.setString(2,fecha_visita );
+            callableStatement.setString(3,visita.getHora_visita());
+            callableStatement.setString(4, visita.getVisita_descripcion());
+            callableStatement.setString(5,visita.getVista_realizada() );
+            callableStatement.setInt(6,  visita.getAsesoria().getAses_id());
+            callableStatement.setString(7, visita.getProfesional().getProf_rut());
+           
 
-            callableStatement.setInt(1, asesoria.getAses_id());
-            String fecha = oDateFormat.format(asesoria.getAses_fecha());
-            callableStatement.setString(2, fecha);
-            callableStatement.setInt(3, (char) asesoria.getSes_realizado());
-            callableStatement.setString(4,  asesoria.getEmpresa().getEmpRut());
-            callableStatement.setString(5, asesoria.getAses_tipo());
             // execute getDBUSERCursor store procedure
             int rowsInserted = callableStatement.executeUpdate();
             if (rowsInserted > 0) {
@@ -50,28 +55,29 @@ public class asesoriaDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-      
         return resultado;
     }
-     
-     
-     public int modificarasesoria(asesoriaDTO asesoria) throws SQLException {
+    
+     public int modificarvisita(VisitaDTO visita) throws SQLException {
         int resultado = 0;
         Connection dbConnection;
         CallableStatement callableStatement;
-        String crearsql = "{call SGT_ASESORIA.PRO_MODIFICAR_ASESORIA(?,?,?,?,?)}";
+        String crearsql = "{call SGT_VISITA.PRO_MODIFICAR_VISITA(?,?,?,?,?,?,?)}";
         try {
             dbConnection = Conexion.getConnection();
             callableStatement = dbConnection.prepareCall(crearsql);
             DateFormat oDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            
+            DateFormat oDateFormatt = new SimpleDateFormat("HH:mm");
+            callableStatement.setInt(1, visita.getId_vista());
+            String fecha_visita = oDateFormat.format(visita.getFecha_visita());
+            callableStatement.setString(2,fecha_visita );
+            callableStatement.setString(3,visita.getHora_visita());
+            callableStatement.setString(4, visita.getVisita_descripcion());
+            callableStatement.setString(5,visita.getVista_realizada() );
+            callableStatement.setInt(6,  visita.getAsesoria().getAses_id());
+            callableStatement.setString(7, visita.getProfesional().getProf_rut());
+           
 
-            callableStatement.setInt(1, asesoria.getAses_id());
-            String fecha = oDateFormat.format(asesoria.getAses_fecha());
-            callableStatement.setString(2, fecha);
-            callableStatement.setInt(3, (char) asesoria.getSes_realizado());
-            callableStatement.setString(4,  asesoria.getEmpresa().getEmpRut());
-            callableStatement.setString(5, asesoria.getAses_tipo());
             // execute getDBUSERCursor store procedure
             int rowsInserted = callableStatement.executeUpdate();
             if (rowsInserted > 0) {
@@ -80,16 +86,17 @@ public class asesoriaDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-      
         return resultado;
     }
      
-      public List<asesoriaDTO> listarcontrato() {
+     
+     
+     public List<VisitaDTO> listarProfesional() {
         Connection dbConnection;
         CallableStatement callableStatement;
         ResultSet rs;
-        String listarempresa = "{call SGT_ASESORIA.sp_listar_asesoria(?)}";
-        List<asesoriaDTO> list = new ArrayList<>();
+        String listarempresa = "{call SGT_VISITA.sp_listar_visita(?)}";
+        List<VisitaDTO> list = new ArrayList<>();
         try {
             dbConnection = Conexion.getConnection();
             callableStatement = dbConnection.prepareCall(listarempresa);
@@ -99,13 +106,16 @@ public class asesoriaDAO {
 
             while (rs.next()) {
 
-                asesoriaDTO a = new asesoriaDTO();
-                a.setAses_id(rs.getInt(1));
-                a.setAses_fecha(rs.getDate(2));
-                a.setSes_realizado((char) rs.getInt(3));
-                EmpresaDAO p = new EmpresaDAO();
-                a.setEmpresa(p.leerEmpresa(rs.getString(4)));
-                a.setAses_tipo( rs.getString(5));
+                VisitaDTO a = new VisitaDTO();
+                a.setId_vista(rs.getInt(1));
+                a.setFecha_visita(rs.getDate(2));
+                a.setHora_visita(rs.getString(3));
+                a.setVisita_descripcion(rs.getString(4));
+                asesoriaDAO as = new asesoriaDAO();
+                a.setAsesoria(as.leerasesoria(rs.getInt(5)));
+                profesionalDAO p = new profesionalDAO();
+                a.setProfesional(p.leerProfesional(rs.getString(6)));
+                a.setVista_realizada( rs.getString(7));
 
                 list.add(a);
             }
@@ -116,35 +126,5 @@ public class asesoriaDAO {
         }
 
         return list;
-    }
-     
-       public asesoriaDTO leerasesoria(int idasesoria) {
-        asesoriaDTO c = null;
-
-        String SSQL = "SELECT * FROM asesoria WHERE ases_id = " + idasesoria;
-
-        Connection conect;
-
-        try {
-
-            conect = Conexion.getConnection();
-            Statement st = conect.createStatement();
-            ResultSet rs = st.executeQuery(SSQL);
-
-            if (rs.next()) {
-
-                c = new asesoriaDTO();
-
-                c.setAses_id(rs.getInt(1));
-                
-                
-            }
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "error de base de datos: " + ex);
-
-        }
-
-        return c;
     }
 }

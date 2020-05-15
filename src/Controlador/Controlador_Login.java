@@ -14,6 +14,7 @@ import Modelo.UsuarioDTO;
 import DAO.UsuarioDAO;
 import Controlador.Controlador_Empresa;
 import DAO.EmpresaDAO;
+import DAO.VisitaDAO;
 import DAO.areaDAO;
 import DAO.asesoriaDAO;
 import DAO.contratoDAO;
@@ -69,12 +70,14 @@ public class Controlador_Login implements ActionListener {
                     contratoDAO contrato = new contratoDAO();
                     areaDAO area = new areaDAO();
                     asesoriaDAO asesoria = new asesoriaDAO();
+                    VisitaDAO Visita = new VisitaDAO();
                     Controlador_asesoria as = new Controlador_asesoria(vistaPrincipal, asesoria);
                     Controlador_Empresa cp = new Controlador_Empresa(vistaPrincipal, usuarioDAO);
                     Controlador_profesional pr = new Controlador_profesional(vistaPrincipal, profeDAO);
                     Controlador_servicio sr = new Controlador_servicio(vistaPrincipal, servi);
                     Controlador_contrato cn = new Controlador_contrato(vistaPrincipal, contrato);
                      controlador_area ar = new controlador_area(vistaPrincipal, area);
+                      Controlador_visita vi= new  Controlador_visita(vistaPrincipal,Visita);
                 }
 
             } else {

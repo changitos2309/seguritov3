@@ -6,12 +6,12 @@
 package Controlador;
 
 import DAO.EmpresaDAO;
-import DAO.UsuarioDAO;
+
 import DAO.asesoriaDAO;
 import Modelo.EmpresaDTO;
 import Modelo.asesoriaDTO;
 import Vista.JFAdmin;
-import java.awt.HeadlessException;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -38,6 +38,7 @@ public class Controlador_asesoria extends javax.swing.JFrame implements ActionLi
 
    private asesoriaDAO asesoriaDAO = new asesoriaDAO();
   SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+  
     public Controlador_asesoria(JFAdmin vistaPrincipal , asesoriaDAO asesoriaDAO)  {
        this.vistaPrincipal = vistaPrincipal;
        
@@ -85,7 +86,7 @@ public class Controlador_asesoria extends javax.swing.JFrame implements ActionLi
               
                     asesoriaDAO as = new asesoriaDAO();
                     asesoriaDTO ases = new asesoriaDTO();
-                    
+                    ases.setAses_id(0);
                     ases.setAses_fecha(fecha);
                     ases.setSes_realizado((char) realizada);
                     ases.setEmpresa(empresa);
