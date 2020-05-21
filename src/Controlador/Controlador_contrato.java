@@ -27,6 +27,7 @@ import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 /**
  *
@@ -49,7 +50,8 @@ public class Controlador_contrato extends javax.swing.JFrame implements ActionLi
         this.Cprofesional.btn_modificar_contrato.addActionListener(this);
         this.Cprofesional.cmb_contr_empresa.addActionListener(this);
         this.Cprofesional.btn_limpiar_contrato.addActionListener(this);
-        
+             AutoCompleteDecorator.decorate(Cprofesional.cmb_contr_empresa);
+             AutoCompleteDecorator.decorate(Cprofesional.cmb_contr_profesional);
         llenarCombos();
         llenarEmpresa();
         llenarprofesional();

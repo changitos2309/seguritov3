@@ -5,11 +5,15 @@
  */
 package Controlador;
 
+import DAO.Detalle_rubroDAO;
 import Modelo.EmpresaDTO;
 
 import DAO.UsuarioDAO;
 
 import DAO.EmpresaDAO;
+import DAO.rubroDAO;
+import Modelo.Detalle_rubroDTO;
+import Modelo.RubroDTO;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +23,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import Vista.JFAdmin;
+import com.mxrck.autocompleter.TextAutoCompleter;
+import java.awt.Dimension;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -41,15 +47,14 @@ public class Controlador_Empresa extends javax.swing.JFrame implements ActionLis
 
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
     
-    
-
     public Controlador_Empresa(JFAdmin vistaPrincipal, UsuarioDAO UsuarioDAO) {
 
         this.vistaPrincipal = vistaPrincipal;
-
+       
         //Objetos de acceso a datos
         this.usuarioDAO = usuarioDAO;
-
+       
+        llenarEmpresa();
         this.vistaPrincipal.setVisible(true);
         this.vistaPrincipal.setLocationRelativeTo(null);
         this.vistaPrincipal.setDefaultCloseOperation(JFAdmin.DO_NOTHING_ON_CLOSE);
@@ -59,15 +64,18 @@ public class Controlador_Empresa extends javax.swing.JFrame implements ActionLis
         this.vistaPrincipal.btn_guardarEmpresa.addActionListener(this);
         this.vistaPrincipal.btn_modificar_empresa.addActionListener(this);
         this.vistaPrincipal.btn_limpiarContrato1.addActionListener(this);
-//     
+        this.vistaPrincipal.btn_agregar_rubro.addActionListener(this);
         this.vistaPrincipal.btn_buscar_empresa.addActionListener(this);
-
+        this.vistaPrincipal.txt_Empresa_rut.addActionListener(this);
+         this.vistaPrincipal.txt_emp_rubro.addActionListener(this);
+         this.vistaPrincipal.btn_guardarRubro.addActionListener(this);
+         
         llenarCombos();
         listarEmpresa();
         limpiarlistarEmpresas();
+        llenarrubro();
     }
-    
- 
+
     @Override
     public void actionPerformed(ActionEvent e) {
         /*aqui enpiea las funciones del controlador de empresa */
@@ -78,7 +86,7 @@ public class Controlador_Empresa extends javax.swing.JFrame implements ActionLis
                 return;
 
             }
-             if (!validarRut(vistaPrincipal.txt_Empresa_rut.getText())) {
+            if (!validarRut(vistaPrincipal.txt_Empresa_rut.getText())) {
                 JOptionPane.showMessageDialog(vistaPrincipal, "Debe ingresar un rut valido", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
 
@@ -133,7 +141,7 @@ public class Controlador_Empresa extends javax.swing.JFrame implements ActionLis
                 empresa.setEmpTrabajadores(canttrabajadores);
                 /*se crea la empresa*/
                 if (ce.crearEmpresa(empresa) == 1) {
-                    
+
                     JOptionPane.showMessageDialog(vistaPrincipal, "Se ha creado una empresa", "Exito", JOptionPane.INFORMATION_MESSAGE);
                     /*llenamos el combo de estado*/
                     llenarCombos();
@@ -155,8 +163,8 @@ public class Controlador_Empresa extends javax.swing.JFrame implements ActionLis
                 return;
 
             }
-            
-             if (vistaPrincipal.txt_Empresa_rut.getText().isEmpty()) {
+
+            if (vistaPrincipal.txt_Empresa_rut.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(vistaPrincipal, "Debe ingresar un rut de empresa", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
 
@@ -212,7 +220,6 @@ public class Controlador_Empresa extends javax.swing.JFrame implements ActionLis
                 if (ce.ModificarEmpresa(empresa) == 1) {
                     JOptionPane.showMessageDialog(vistaPrincipal, "Se ha creado una empresa", "Exito", JOptionPane.INFORMATION_MESSAGE);
 
-                   
                     listarEmpresa();
                 } else {
                     JOptionPane.showMessageDialog(vistaPrincipal, "No se ha podido agregar empresa", "Error", JOptionPane.ERROR_MESSAGE);
@@ -222,33 +229,69 @@ public class Controlador_Empresa extends javax.swing.JFrame implements ActionLis
                 JOptionPane.showMessageDialog(vistaPrincipal, "No se ha podido registrar empresa", "Error", JOptionPane.ERROR_MESSAGE);
             }
 
-        } 
-        else if (e.getSource() == vistaPrincipal.btn_limpiarContrato1) {
-          
+        } else if (e.getSource() == vistaPrincipal.btn_limpiarContrato1) {
+
             limpiarlistarEmpresas();
             listarEmpresa();
-             
-         
-        }else if (e.getSource() == vistaPrincipal.btn_buscar_empresa) {
-          
-             
-             String rut = vistaPrincipal.txt_Empresa_rut.getText();
-             buscarEmpresa(rut);
-             
-         
+
+        } else if (e.getSource() == vistaPrincipal.btn_buscar_empresa) {
+
+            String rut = vistaPrincipal.txt_Empresa_rut.getText();
+            buscarEmpresa(rut);
+
         }
-       
+
+        if (e.getSource() == vistaPrincipal.btn_agregar_rubro) {
+        vistaPrincipal.Jrubro.setVisible(true);
+        vistaPrincipal.Jrubro.setMaximumSize(new Dimension(200, 500));
+        vistaPrincipal.Jrubro.setSize(new Dimension(800, 180));
+        vistaPrincipal.Jrubro.setLocationRelativeTo(null);
+        
+        
+       }
+if (e.getSource() == vistaPrincipal.btn_guardarRubro) {
+            
+        if (vistaPrincipal.txt_emp_rubro.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(vistaPrincipal, "Debe ingresar un rubro", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+
+            }
+            
+            try {
+                String rut_emp = vistaPrincipal.txt_Empresa_rut.getText();
+                int id_rubro = Integer.parseInt(vistaPrincipal.txt_emp_rubro.getText().split("-")[0]);
+                Detalle_rubroDTO rubro = new Detalle_rubroDTO();
+                Detalle_rubroDAO ru = new Detalle_rubroDAO();
+                  
+                 rubro.setCantidad(1);
+                 rubro.getEmpresa().setEmpRut(rut_emp);
+                 rubro.getRubro().setId_rubro(id_rubro);
+                 
+                  
+                 if ( ru.crearDetallerubro(rubro)== 1) {
+                    JOptionPane.showMessageDialog(vistaPrincipal, "Se ha agrega el rubro de empresa", "Exito", JOptionPane.INFORMATION_MESSAGE);
+
+                   
+                } else {
+                    JOptionPane.showMessageDialog(vistaPrincipal, "No se ha podido el rubro", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Controlador_Empresa.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(vistaPrincipal, "No se ha podido registrar rubro", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            
+        }
     }
-    
-      public String estandarRut(String rut){
+
+    public String estandarRut(String rut) {
         rut = rut.replace(".", "");
         int pos = rut.length();
-        if(!rut.contains("-")){
-            rut=rut.substring(0, pos-1)+"-"+rut.substring(pos-1,pos);
+        if (!rut.contains("-")) {
+            rut = rut.substring(0, pos - 1) + "-" + rut.substring(pos - 1, pos);
         }
         return rut;
     }
-    
 
     public void llenarCombos() {
         vistaPrincipal.cmb_estado_empresa.addItem("Inactivo");
@@ -298,7 +341,33 @@ public class Controlador_Empresa extends javax.swing.JFrame implements ActionLis
         TableRowSorter<TableModel> elQueOrdena = new TableRowSorter<TableModel>(modelo);
         vistaPrincipal.tabla_empresa.setRowSorter(elQueOrdena);
     }
-     private void buscarEmpresa(String rut) {
+
+    //a.getEmpRut()+" "+a.getEmpRazons()
+    private void llenarEmpresa() {
+
+        EmpresaDAO ca = new EmpresaDAO();
+        TextAutoCompleter ac;
+        ac = new TextAutoCompleter(vistaPrincipal.txt_Empresa_rut);
+        for (EmpresaDTO a : ca.listarEmpresas()) {
+            ac.addItem(a.getEmpRut());
+
+        }
+
+    }
+     private void llenarrubro() {
+
+         rubroDAO ca = new rubroDAO();
+        TextAutoCompleter ac;
+        ac = new TextAutoCompleter(vistaPrincipal.txt_emp_rubro);
+        for (RubroDTO a : ca.listarProfesional()) {
+            ac.addItem(a.getId_rubro()+"-"+a.getNombre());
+            
+
+        }
+
+    }
+
+    private void buscarEmpresa(String rut) {
         DefaultTableModel modelo = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int fila, int columna) {
@@ -320,24 +389,23 @@ public class Controlador_Empresa extends javax.swing.JFrame implements ActionLis
         EmpresaDAO ca = new EmpresaDAO();
         for (EmpresaDTO a : ca.listarEmpresas()) {
             if (rut.equalsIgnoreCase(a.getEmpRut())) {
-                
-            
-            Object[] fila = new Object[7]; // Hay tres columnas en la tabla
-            // fila[0] = a.getId_sucursal();
-            fila[0] = a.getEmpRut(); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
-            fila[1] = a.getEmpRazons();
-            fila[2] = a.getEmpNom();
-            fila[3] = a.getEmpDirecc();
-            fila[4] = a.getEmpTelefono();
-            fila[5] = a.getEmpTrabajadores();
-            if (a.getEmpEstado() == 0) {
-                fila[6] = "Inactivo";
-            } else {
-                fila[6] = "Activo";
+
+                Object[] fila = new Object[7]; // Hay tres columnas en la tabla
+                // fila[0] = a.getId_sucursal();
+                fila[0] = a.getEmpRut(); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
+                fila[1] = a.getEmpRazons();
+                fila[2] = a.getEmpNom();
+                fila[3] = a.getEmpDirecc();
+                fila[4] = a.getEmpTelefono();
+                fila[5] = a.getEmpTrabajadores();
+                if (a.getEmpEstado() == 0) {
+                    fila[6] = "Inactivo";
+                } else {
+                    fila[6] = "Activo";
+                }
+                modelo.addRow(fila);
             }
-            modelo.addRow(fila);
-            }
-           
+
         }
 
         vistaPrincipal.tabla_empresa.setModel(modelo);
@@ -360,20 +428,21 @@ public class Controlador_Empresa extends javax.swing.JFrame implements ActionLis
     @Override
     public void mouseExited(MouseEvent e) {
     }
-    
+
 //metodo para validar correo electronio
-      public boolean isEmail(String correo) {
+    public boolean isEmail(String correo) {
         Pattern pat = null;
-        Matcher mat = null;        
+        Matcher mat = null;
         pat = Pattern.compile("^([0-9a-zA-Z]([_.w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-w]*[0-9a-zA-Z].)+([a-zA-Z]{2,9}.)+[a-zA-Z]{2,3})$");
         mat = pat.matcher(correo);
         if (mat.find()) {
             System.out.println("[" + mat.group() + "]");
             return true;
-        }else{
+        } else {
             return false;
-        }        
+        }
     }
+
     private boolean validarRut(String rut) {
         boolean validacion = false;
         try {
@@ -409,7 +478,7 @@ public class Controlador_Empresa extends javax.swing.JFrame implements ActionLis
         vistaPrincipal.btn_guardarEmpresa.setEnabled(true);
         vistaPrincipal.btn_modificar_empresa.setEnabled(false);
         vistaPrincipal.txt_Empresa_rut.requestFocus();
-         vistaPrincipal.txt_Empresa_rut.setEnabled(true);
+        vistaPrincipal.txt_Empresa_rut.setEnabled(true);
     }
 
     @Override
@@ -419,7 +488,7 @@ public class Controlador_Empresa extends javax.swing.JFrame implements ActionLis
             if (filaSeleccionada >= 0) {
                 vistaPrincipal.btn_modificar_empresa.setEnabled(true);
                 vistaPrincipal.btn_guardarEmpresa.setEnabled(false);
-              vistaPrincipal.txt_Empresa_rut.setEnabled(false);
+                vistaPrincipal.txt_Empresa_rut.setEnabled(false);
                 String rut_empresa = vistaPrincipal.tabla_empresa.getValueAt(vistaPrincipal.tabla_empresa.getSelectedRow(), 0).toString();
                 String razon = vistaPrincipal.tabla_empresa.getValueAt(vistaPrincipal.tabla_empresa.getSelectedRow(), 1).toString();
                 String nombre = vistaPrincipal.tabla_empresa.getValueAt(vistaPrincipal.tabla_empresa.getSelectedRow(), 2).toString();

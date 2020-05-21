@@ -27,6 +27,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 /**
  *
@@ -43,15 +44,16 @@ public class Controlador_visita extends javax.swing.JFrame implements ActionList
       Vvisita = vistaPrincipal;
       this.VisitaDAO = VisitaDAO;
          this.Vvisita.cmb_visita_rofesional.addActionListener(this);
-          this.Vvisita.cmb_visita_realizada.addActionListener(this);
+      
            this.Vvisita.btn_guardarvisita.addActionListener(this);
            this.Vvisita.btn_modificar_visita.addActionListener(this);
            this.Vvisita.btn_limpiar_visita.addActionListener(this);
            
          this.Vvisita.tabla_visita.addMouseListener(this);
            
+         AutoCompleteDecorator.decorate(Vvisita.cmb_visita_rofesional);
         llenarprofesional();
-        llenarCombos();
+       
         llenarasesoria();
         listarProfesional();
     }
@@ -66,7 +68,11 @@ public class Controlador_visita extends javax.swing.JFrame implements ActionList
                 return;
             }
             if (Vvisita.txt_hora_fecha.getText().isEmpty()){
-                 JOptionPane.showMessageDialog(Vvisita, "Debe ingresar fecha inicio contrato", "Error", JOptionPane.ERROR_MESSAGE);
+                 JOptionPane.showMessageDialog(Vvisita, "debe ingresar hora de visita", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+             if (Validar_hora(Vvisita.txt_hora_fecha.getText())!=true){
+                 JOptionPane.showMessageDialog(Vvisita, "el formato de la hora no es valido", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             
@@ -74,6 +80,7 @@ public class Controlador_visita extends javax.swing.JFrame implements ActionList
                  JOptionPane.showMessageDialog(Vvisita, "Debe ingresar funa descripcion", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+             
             
             try {
                  Date fecha = Vvisita.txt_fecha_visita.getDate();
@@ -85,12 +92,8 @@ public class Controlador_visita extends javax.swing.JFrame implements ActionList
                   asesoriaDAO as = new asesoriaDAO();
                   asesoriaDTO  ases = as.leerasesoria(Integer.parseInt(this.Vvisita.cmb_visota_ases.getSelectedItem().toString().split("-")[0]));
                 
-                 String realizada;
-                 if (Vvisita.cmb_visita_realizada.getSelectedIndex() == 0) {
-                    realizada = "SI";
-                } else {
-                    realizada = "NO";
-                }
+                 String realizada = "NO";
+                
                  VisitaDAO vi  = new VisitaDAO();
                  VisitaDTO visita = new VisitaDTO();
                  visita.setId_vista(0);
@@ -124,7 +127,7 @@ public class Controlador_visita extends javax.swing.JFrame implements ActionList
                 return;
             }
             if (Vvisita.txt_hora_fecha.getText().isEmpty()){
-                 JOptionPane.showMessageDialog(Vvisita, "Debe ingresar fecha inicio contrato", "Error", JOptionPane.ERROR_MESSAGE);
+                 JOptionPane.showMessageDialog(Vvisita, "debe ingresar hora de visita", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             
@@ -143,12 +146,8 @@ public class Controlador_visita extends javax.swing.JFrame implements ActionList
                   asesoriaDAO as = new asesoriaDAO();
                   asesoriaDTO  ases = as.leerasesoria(Integer.parseInt(this.Vvisita.cmb_visota_ases.getSelectedItem().toString().split("-")[0]));
                 
-                 String realizada;
-                 if (Vvisita.cmb_visita_realizada.getSelectedIndex() == 0) {
-                    realizada = "SI";
-                } else {
-                    realizada = "NO";
-                }
+                 String realizada ="NO";
+                 
                  VisitaDAO vi  = new VisitaDAO();
                  VisitaDTO visita = new VisitaDTO();
                  visita.setId_vista(id_visita);
@@ -200,11 +199,7 @@ public class Controlador_visita extends javax.swing.JFrame implements ActionList
         }
     }
     
-    public void llenarCombos() {
-        Vvisita.cmb_visita_realizada.addItem("SI");
-        Vvisita.cmb_visita_realizada.addItem("NO");
-        Vvisita.cmb_visita_realizada.setSelectedIndex(0);
-    }
+  
     
     @Override
     public void mouseClicked(MouseEvent me) {
@@ -235,11 +230,7 @@ public class Controlador_visita extends javax.swing.JFrame implements ActionList
                Vvisita.cmb_visita_rofesional.setSelectedItem(prof);
                Vvisita.cmb_visota_ases.setSelectedItem(ases);
           
-                if ("SI".equals(realiza)) {
-                    Vvisita.cmb_visita_realizada.setSelectedIndex(0);
-                } else {
-                    Vvisita.cmb_visita_realizada.setSelectedIndex(1);
-                }
+               
             }
         }
     }
@@ -250,7 +241,7 @@ public class Controlador_visita extends javax.swing.JFrame implements ActionList
                Vvisita.txt_visita_descripcion.setText("");
                Vvisita.cmb_visita_rofesional.setSelectedIndex(0);
                Vvisita.cmb_visota_ases.setSelectedIndex(0);
-              Vvisita.cmb_visita_realizada.setSelectedIndex(0);
+             
                 Vvisita.btn_guardarvisita.setEnabled(true);
                 Vvisita.cmb_visita_rofesional.setEnabled(true);
                 Vvisita.cmb_visota_ases.setEnabled(true);
@@ -273,6 +264,25 @@ public class Controlador_visita extends javax.swing.JFrame implements ActionList
     @Override
     public void mouseExited(MouseEvent me) {
       
+    }
+    
+    public Boolean Validar_hora (String hora)
+    {
+        Boolean b;
+         char []a = hora.toString().toCharArray();
+         String [] c = hora.split(":");
+         if ((a[0]==' ')||(a[1]==' ')||(a[2]==' ')
+           ||(a[3]==' ')||(a[4]==' ')|| (getInteger(c[0])>24)|| (getInteger(c[1])>24)) {
+            return b = false;
+        }else {
+              b =true;
+         }
+       return b;
+    }
+    
+    public int getInteger(String valor){
+        int integer = Integer.parseInt(valor);
+        return integer;
     }
   private void listarProfesional() {
         DefaultTableModel modelo = new DefaultTableModel() {

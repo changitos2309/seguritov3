@@ -21,6 +21,7 @@ import java.awt.event.MouseListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Vista.JFAdmin;
+import com.mxrck.autocompleter.TextAutoCompleter;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -70,7 +71,7 @@ public final class Controlador_profesional extends javax.swing.JFrame implements
         this.Vprofesional.btn_limpiar_profesional1.addActionListener(this);
         this.Vprofesional.btn_buscar_profesional.addActionListener(this);
         
-
+llenarprofesional();
        llenarCombos();
        llenarArea();
        
@@ -109,7 +110,15 @@ public final class Controlador_profesional extends javax.swing.JFrame implements
         }
 
     }
+private void llenarprofesional() {
+         profesionalDAO ca = new profesionalDAO();
+      TextAutoCompleter ac;
+        ac = new TextAutoCompleter(Vprofesional.txt_prof_rut);
+        for (profesionalDTO a : ca.listarProfesional()) {
+          ac.addItem(a.getProf_rut());
 
+        }
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
 
