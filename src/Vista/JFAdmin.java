@@ -39,7 +39,6 @@ public class JFAdmin extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         txt_emp_rubro = new javax.swing.JTextField();
         jLabel52 = new javax.swing.JLabel();
-        btn_guardarRubro = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         JPmenu = new javax.swing.JPanel();
@@ -213,11 +212,6 @@ public class JFAdmin extends javax.swing.JFrame {
         jLabel52.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel52.setText("Rubro:");
 
-        btn_guardarRubro.setBackground(new java.awt.Color(46, 61, 94));
-        btn_guardarRubro.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        btn_guardarRubro.setForeground(new java.awt.Color(255, 255, 255));
-        btn_guardarRubro.setText("Agregar");
-
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -227,21 +221,18 @@ public class JFAdmin extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel52)
                 .addGap(10, 10, 10)
-                .addComponent(txt_emp_rubro, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btn_guardarRubro, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 78, Short.MAX_VALUE))
+                .addComponent(txt_emp_rubro, javax.swing.GroupLayout.PREFERRED_SIZE, 540, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 20, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(42, 42, 42)
+                .addGap(48, 48, 48)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_emp_rubro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel52)
-                    .addComponent(btn_guardarRubro, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(56, Short.MAX_VALUE))
+                    .addComponent(jLabel52))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout JrubroLayout = new javax.swing.GroupLayout(Jrubro.getContentPane());
@@ -1701,8 +1692,7 @@ public class JFAdmin extends javax.swing.JFrame {
                         .addGap(89, 89, 89)
                         .addGroup(JPprofesionalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txt_prof_teleono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel24))
-                        .addGap(1, 1, 1))
+                            .addComponent(jLabel24)))
                     .addGroup(JPprofesionalLayout.createSequentialGroup()
                         .addGroup(JPprofesionalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(JPprofesionalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1726,6 +1716,7 @@ public class JFAdmin extends javax.swing.JFrame {
                             .addGroup(JPprofesionalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(txt_prof_apell, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel23)))))
+                .addGap(1, 1, 1)
                 .addGroup(JPprofesionalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(JPprofesionalLayout.createSequentialGroup()
                         .addGap(50, 50, 50)
@@ -1736,7 +1727,6 @@ public class JFAdmin extends javax.swing.JFrame {
                         .addComponent(btn_limpiar_profesional1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(124, 124, 124))
                     .addGroup(JPprofesionalLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
                         .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
@@ -2123,7 +2113,6 @@ public class JFAdmin extends javax.swing.JFrame {
     public javax.swing.JButton btn_generar_contrato;
     public javax.swing.JButton btn_guardarEmpresa;
     public javax.swing.JButton btn_guardarProfesional;
-    public javax.swing.JButton btn_guardarRubro;
     public javax.swing.JButton btn_guardarcontrato;
     public javax.swing.JButton btn_guardarprofesion;
     public javax.swing.JButton btn_guardarservicio;

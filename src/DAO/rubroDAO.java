@@ -11,6 +11,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -50,5 +51,36 @@ public class rubroDAO {
         }
 
         return list;
+    }
+      
+      
+      public RubroDTO leerRubro(int id) {
+        RubroDTO c = null;
+
+        String SSQL = "SELECT * FROM RUBRO WHERE RUBRO_ID = " + id;
+
+        Connection conect;
+
+        try {
+
+            conect = Conexion.getConnection();
+            Statement st = conect.createStatement();
+            ResultSet rs = st.executeQuery(SSQL);
+
+            if (rs.next()) {
+
+                c = new RubroDTO();
+
+                c.setId_rubro(rs.getInt(1));
+                c.setNombre(rs.getString(2));
+                
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "error de base de datos: " + ex);
+
+        }
+
+        return c;
     }
 }

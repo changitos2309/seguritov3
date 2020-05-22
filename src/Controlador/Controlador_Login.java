@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import Modelo.UsuarioDTO;
 import DAO.UsuarioDAO;
 import Controlador.Controlador_Empresa;
+import DAO.Detalle_rubroDAO;
 import DAO.EmpresaDAO;
 import DAO.UsuarioEmpresaDAO;
 import DAO.VisitaDAO;
@@ -73,6 +74,7 @@ public class Controlador_Login implements ActionListener {
                     asesoriaDAO asesoria = new asesoriaDAO();
                     VisitaDAO Visita = new VisitaDAO();
                     UsuarioEmpresaDAO use = new UsuarioEmpresaDAO();
+                    
                     Controlador_Empresa cp = new Controlador_Empresa(vistaPrincipal, usuarioDAO);
                     Controlador_profesional pr = new Controlador_profesional(vistaPrincipal, profeDAO);
                     Controlador_servicio sr = new Controlador_servicio(vistaPrincipal, servi);
