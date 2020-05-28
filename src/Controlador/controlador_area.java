@@ -31,13 +31,16 @@ public class controlador_area extends javax.swing.JFrame implements ActionListen
      private JFAdmin vistaarea = new JFAdmin();
      
      areaDAO areaDAO = new areaDAO();
-    
+      int ar = 0;
     public controlador_area(JFAdmin vistaPrincipal,areaDAO areaDAO ){
         vistaarea = vistaPrincipal;
         vistaarea.btn_guardarprofesion.addActionListener(this);
-        
-         int ar = 0;
+         vistaarea.btn_modificar_profesion.addActionListener(this);
+          vistaarea.btn_limpiar_profesion.addActionListener(this);
+         vistaarea.tabla_area.addMouseListener(this);
+       
          listararea();
+         limpiararea ();
     }
      
      
@@ -62,14 +65,14 @@ public class controlador_area extends javax.swing.JFrame implements ActionListen
             
             if (a.creararea(area) == 1) {
                     JOptionPane.showMessageDialog(vistaarea, "Se ha creado una profesion", "Exito", JOptionPane.INFORMATION_MESSAGE);
-                   
+                   listararea();
                 } else {
                     JOptionPane.showMessageDialog(vistaarea, "No se ha podido agregar profesion", "Error", JOptionPane.ERROR_MESSAGE);
                 }
          
             } catch (SQLException ex) {
                   Logger.getLogger(Controlador_Empresa.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(vistaarea, "No se ha podido registrar profesional", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(vistaarea, "No se ha podido registrar area profesional", "Error", JOptionPane.ERROR_MESSAGE);
             }
             
         }
@@ -88,12 +91,12 @@ public class controlador_area extends javax.swing.JFrame implements ActionListen
             areaDTO area = new areaDTO();
            
             
-            
+            area.setArea_id(ar);
             area.setArea_detalle(nombre);
             
             if (a.modificararea(area) == 1) {
                     JOptionPane.showMessageDialog(vistaarea, "Se ha modificado una profesion", "Exito", JOptionPane.INFORMATION_MESSAGE);
-                   
+                    listararea();
                 } else {
                     JOptionPane.showMessageDialog(vistaarea, "No se ha podido modificar profesion", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -104,6 +107,12 @@ public class controlador_area extends javax.swing.JFrame implements ActionListen
             }
             
         }
+          if (ae.getSource()==  vistaarea.btn_limpiar_profesion) {
+            
+         limpiararea();
+            
+        }
+        
         
     }
 
@@ -141,7 +150,27 @@ public class controlador_area extends javax.swing.JFrame implements ActionListen
     }
     @Override
     public void mouseClicked(MouseEvent me) {
-        
+         if (me.getSource() == vistaarea.tabla_area) {
+            int filaSeleccionada = vistaarea.tabla_area.getSelectedRow();
+            if (filaSeleccionada >= 0) {
+                vistaarea.btn_modificar_profesion.setEnabled(true);
+                vistaarea.btn_guardarprofesion.setEnabled(false);
+            
+             ar =  Integer.parseInt(vistaarea.tabla_area.getValueAt(vistaarea.tabla_area.getSelectedRow(), 0).toString());
+                String nombre_prof = vistaarea.tabla_area.getValueAt(vistaarea.tabla_area.getSelectedRow(), 1).toString();
+               
+                vistaarea.txt_profesion_nombre.setText(nombre_prof);
+                
+       
+               
+            }
+        }
+    }
+    public void limpiararea ()
+    {
+           vistaarea.txt_profesion_nombre.setText("");
+           vistaarea.btn_guardarprofesion.setEnabled(true);
+         vistaarea.btn_modificar_profesion.setEnabled(false);
     }
 
     @Override

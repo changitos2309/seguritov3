@@ -39,26 +39,29 @@ public class Controlador_contrato extends javax.swing.JFrame implements ActionLi
 
     contratoDAO contratoDAO = new contratoDAO();
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
-    
+
     public Controlador_contrato(JFAdmin Cprofesional, contratoDAO contratoDAO) {
 
         this.Cprofesional = Cprofesional;
 
         this.contratoDAO = contratoDAO;
         this.Cprofesional.tabla_contrato.addMouseListener(this);
+        this.Cprofesional.JPMcontrato.addMouseListener(this);
         this.Cprofesional.btn_guardarcontrato.addActionListener(this);
         this.Cprofesional.btn_modificar_contrato.addActionListener(this);
         this.Cprofesional.cmb_contr_empresa.addActionListener(this);
+        this.Cprofesional.cmb_contr_profesional.addActionListener(this);
         this.Cprofesional.btn_limpiar_contrato.addActionListener(this);
-             AutoCompleteDecorator.decorate(Cprofesional.cmb_contr_empresa);
-             AutoCompleteDecorator.decorate(Cprofesional.cmb_contr_profesional);
+        AutoCompleteDecorator.decorate(Cprofesional.cmb_contr_empresa);
+        AutoCompleteDecorator.decorate(Cprofesional.cmb_contr_profesional);
         llenarCombos();
         llenarEmpresa();
         llenarprofesional();
         listarcontrato();
-      
+
     }
-        int id_contr =0;
+    int id_contr = 0;
+
     @Override
     public void actionPerformed(ActionEvent ae) {
         if (ae.getSource() == Cprofesional.btn_guardarcontrato) {
@@ -73,18 +76,27 @@ public class Controlador_contrato extends javax.swing.JFrame implements ActionLi
                 return;
 
             }
+             if (Cprofesional.cmb_contr_empresa.getSelectedIndex() == 0) {
+                JOptionPane.showMessageDialog(Cprofesional, "Debe selecionar una empresa", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+
+            }
+             if (Cprofesional.cmb_contr_profesional.getSelectedIndex() == 0) {
+                JOptionPane.showMessageDialog(Cprofesional, "Debe selecionar una profesional", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+
+            }
 
             try {
-               
+
                 Date ini = Cprofesional.txt_fecha_inicio.getDate();
                 Date ter = Cprofesional.txt_fecha_terminar.getDate();
-                
-                
+
                 EmpresaDAO c = new EmpresaDAO();
                 EmpresaDTO empresa = c.leerEmpresa(this.Cprofesional.cmb_contr_empresa.getSelectedItem().toString().split(" ")[0]);
                 profesionalDAO p = new profesionalDAO();
                 profesionalDTO profesional = p.leerProfesional(this.Cprofesional.cmb_contr_profesional.getSelectedItem().toString().split(" ")[0]);
-                
+
                 int estado;
                 if (Cprofesional.cmb_contr_estado.getSelectedIndex() == 0) {
                     estado = 0;
@@ -92,17 +104,16 @@ public class Controlador_contrato extends javax.swing.JFrame implements ActionLi
                     estado = 1;
                 }
 
-
                 contratoDAO pr = new contratoDAO();
                 contratoDTO contrato = new contratoDTO();
-               
+
                 contrato.setContrato_id(0);
                 contrato.setContrato_fecini(ini);
                 contrato.setContrato_fectermino(ter);
                 contrato.setContrato_ativo((char) estado);
                 contrato.setContrato_rmp_rut(empresa);
                 contrato.setContrato_pro_rut(profesional);
-                
+
                 if (pr.crearContrato(contrato) == 1) {
                     JOptionPane.showMessageDialog(Cprofesional, "Se ha creado una contrato", "Exito", JOptionPane.INFORMATION_MESSAGE);
                     llenarEmpresa();
@@ -114,11 +125,11 @@ public class Controlador_contrato extends javax.swing.JFrame implements ActionLi
                 Logger.getLogger(Controlador_Empresa.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(Cprofesional, "No se ha podido registrar contrato", "Error", JOptionPane.ERROR_MESSAGE);
 
-            } 
+            }
 
         }
-        
-         if (ae.getSource() == Cprofesional.btn_modificar_contrato) {
+
+        if (ae.getSource() == Cprofesional.btn_modificar_contrato) {
 
             if (Cprofesional.txt_fecha_inicio.getDate() == null) {
                 JOptionPane.showMessageDialog(Cprofesional, "Debe ingresar fecha inicio contrato", "Error", JOptionPane.ERROR_MESSAGE);
@@ -130,20 +141,28 @@ public class Controlador_contrato extends javax.swing.JFrame implements ActionLi
                 return;
 
             }
+             if (Cprofesional.cmb_contr_empresa.getSelectedIndex() == 0) {
+                JOptionPane.showMessageDialog(Cprofesional, "Debe selecionar una empresa", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+
+            }
+             if (Cprofesional.cmb_contr_profesional.getSelectedIndex() == 0) {
+                JOptionPane.showMessageDialog(Cprofesional, "Debe selecionar una profesional", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+
+            }
 
             try {
-               
+
                 Date ini = Cprofesional.txt_fecha_inicio.getDate();
                 Date ter = Cprofesional.txt_fecha_terminar.getDate();
-                
-               
+
                 EmpresaDAO c = new EmpresaDAO();
                 EmpresaDTO empresa = c.leerEmpresa(this.Cprofesional.cmb_contr_empresa.getSelectedItem().toString().split(" ")[0]);
-                
+
                 profesionalDAO p = new profesionalDAO();
                 profesionalDTO profesional = p.leerProfesional(this.Cprofesional.cmb_contr_profesional.getSelectedItem().toString().split(" ")[0]);
-              
-                
+
                 int estado;
                 if (Cprofesional.cmb_contr_estado.getSelectedIndex() == 0) {
                     estado = 0;
@@ -151,22 +170,21 @@ public class Controlador_contrato extends javax.swing.JFrame implements ActionLi
                     estado = 1;
                 }
 
-
                 contratoDAO pr = new contratoDAO();
                 contratoDTO contrato = new contratoDTO();
-               
+
                 contrato.setContrato_id(id_contr);
                 contrato.setContrato_fecini(ini);
                 contrato.setContrato_fectermino(ter);
                 contrato.setContrato_ativo((char) estado);
                 contrato.setContrato_rmp_rut(empresa);
-                 contrato.setContrato_pro_rut(profesional);
-                
+                contrato.setContrato_pro_rut(profesional);
+
                 if (pr.modificarContrato(contrato) == 1) {
                     JOptionPane.showMessageDialog(Cprofesional, "Se ha modificado  contrato", "Exito", JOptionPane.INFORMATION_MESSAGE);
-                    
+
                     listarcontrato();
-                   
+
                 } else {
                     JOptionPane.showMessageDialog(Cprofesional, "No se ha podido modificar  contrato", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -174,27 +192,29 @@ public class Controlador_contrato extends javax.swing.JFrame implements ActionLi
                 Logger.getLogger(Controlador_Empresa.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(Cprofesional, "No se ha podido registrar contrato", "Error", JOptionPane.ERROR_MESSAGE);
 
-            } 
+            }
 
         }
-         
-         if (ae.getSource() == Cprofesional.btn_limpiar_contrato) {
-            limpiarcontrato ();
+
+        if (ae.getSource() == Cprofesional.btn_limpiar_contrato) {
+            limpiarcontrato();
         }
-         if (ae.getSource() == Cprofesional.btn_buscar_contrato) {
-            
+        if (ae.getSource() == Cprofesional.btn_buscar_contrato) {
+
         }
     }
-    
-    public void limpiarcontrato ()
-    {
-      
-        Cprofesional.txt_fecha_inicio=null;
-        Cprofesional.txt_fecha_terminar = null;
+
+    public void limpiarcontrato() {
+        Cprofesional.txt_fecha_inicio.setDate(new Date());
+        Cprofesional.txt_fecha_terminar.setDate(new Date());
         Cprofesional.cmb_contr_estado.setSelectedIndex(0);
-         Cprofesional.cmb_contr_empresa.setSelectedIndex(0);
-          Cprofesional.cmb_contr_profesional.setSelectedIndex(0);
-          Cprofesional.btn_guardarcontrato.setEnabled(true);
+        Cprofesional.cmb_contr_empresa.setSelectedIndex(0);
+        Cprofesional.cmb_contr_profesional.setSelectedIndex(0);
+        Cprofesional.cmb_contr_profesional.setEnabled(true);
+        Cprofesional.cmb_contr_estado.setEnabled(true);
+        Cprofesional.cmb_contr_empresa.setEnabled(true);
+        Cprofesional.btn_guardarcontrato.setEnabled(true);
+        Cprofesional.btn_modificar_contrato.setEnabled(false);
     }
 
     public void llenarCombos() {
@@ -205,27 +225,29 @@ public class Controlador_contrato extends javax.swing.JFrame implements ActionLi
     }
 
     private void llenarEmpresa() {
-        
+
         EmpresaDAO ca = new EmpresaDAO();
         Cprofesional.cmb_contr_empresa.removeAllItems();
         Cprofesional.cmb_contr_empresa.removeAllItems();
+        Cprofesional.cmb_contr_empresa.addItem("seleccione Empresa ");
         for (EmpresaDTO a : ca.listarEmpresas()) {
-            Cprofesional.cmb_contr_empresa.addItem(a.getEmpRut()+" "+a.getEmpRazons());
-          
+            Cprofesional.cmb_contr_empresa.addItem(a.getEmpRut() + " " + a.getEmpRazons());
+
         }
-        
+
     }
-    
-     private void llenarprofesional() {
-         profesionalDAO ca = new profesionalDAO();
+
+    private void llenarprofesional() {
+        profesionalDAO ca = new profesionalDAO();
         Cprofesional.cmb_contr_profesional.removeAllItems();
         Cprofesional.cmb_contr_profesional.removeAllItems();
+        Cprofesional.cmb_contr_profesional.addItem("seleccione profesional ");
         for (profesionalDTO a : ca.listarProfesional()) {
-            Cprofesional.cmb_contr_profesional.addItem(a.getProf_rut()+" "+a.getProf_nombre());
+            Cprofesional.cmb_contr_profesional.addItem(a.getProf_rut() + " " + a.getProf_nombre());
 
         }
     }
-    
+
     private void listarcontrato() {
         DefaultTableModel modelo = new DefaultTableModel() {
             @Override
@@ -243,7 +265,7 @@ public class Controlador_contrato extends javax.swing.JFrame implements ActionLi
         modelo.addColumn("Empresa");
         modelo.addColumn("profesional asignado");
         modelo.addColumn("Estado");
-     
+
         contratoDAO ca = new contratoDAO();
         for (contratoDTO a : ca.listarcontrato()) {
 
@@ -251,9 +273,9 @@ public class Controlador_contrato extends javax.swing.JFrame implements ActionLi
             fila[0] = a.getContrato_id(); // debe partirn en eso 0s
             fila[1] = a.getContrato_fecini();
             fila[2] = a.getContrato_fectermino();
-            fila[3] = a.getContrato_rmp_rut().getEmpRut()+" "+a.getContrato_rmp_rut().getEmpRazons();
-            fila[4] = a.getContrato_pro_rut().getProf_rut()+" "+a.getContrato_pro_rut().getProf_nombre();
-            if (a.getContrato_ativo()== 0) {
+            fila[3] = a.getContrato_rmp_rut().getEmpRut() + " " + a.getContrato_rmp_rut().getEmpRazons();
+            fila[4] = a.getContrato_pro_rut().getProf_rut() + " " + a.getContrato_pro_rut().getProf_nombre();
+            if (a.getContrato_ativo() == 0) {
                 fila[5] = "Inactivo";
             } else {
                 fila[5] = "Activo";
@@ -268,14 +290,14 @@ public class Controlador_contrato extends javax.swing.JFrame implements ActionLi
 
     @Override
     public void mouseClicked(MouseEvent e) {
-         if (e.getSource() == Cprofesional.tabla_contrato) {
+        if (e.getSource() == Cprofesional.tabla_contrato) {
             int filaSeleccionada = Cprofesional.tabla_contrato.getSelectedRow();
             if (filaSeleccionada >= 0) {
                 Cprofesional.btn_modificar_contrato.setEnabled(true);
                 Cprofesional.btn_guardarcontrato.setEnabled(false);
                 Cprofesional.cmb_contr_empresa.setEnabled(false);
                 Cprofesional.cmb_contr_profesional.setEnabled(false);
-                 id_contr = Integer.parseInt(Cprofesional.tabla_contrato.getValueAt(Cprofesional.tabla_contrato.getSelectedRow(), 0).toString());
+                id_contr = Integer.parseInt(Cprofesional.tabla_contrato.getValueAt(Cprofesional.tabla_contrato.getSelectedRow(), 0).toString());
                 Date fech_ini = null;
                 try {
                     fech_ini = formatter.parse(Cprofesional.tabla_contrato.getValueAt(Cprofesional.tabla_contrato.getSelectedRow(), 1).toString());
@@ -296,7 +318,7 @@ public class Controlador_contrato extends javax.swing.JFrame implements ActionLi
                 Cprofesional.txt_fecha_terminar.setDate(fech_ter);
                 Cprofesional.cmb_contr_empresa.setSelectedItem(empresa);
                 Cprofesional.cmb_contr_profesional.setSelectedItem(prof);
-          
+
                 if ("Activo".equals(estado)) {
                     Cprofesional.cmb_contr_estado.setSelectedIndex(1);
                 } else {
@@ -304,27 +326,31 @@ public class Controlador_contrato extends javax.swing.JFrame implements ActionLi
                 }
             }
         }
-       
+        if (e.getSource() == Cprofesional.JPMcontrato) {
+            llenarEmpresa();
+            llenarprofesional();
+        }
+
     }
 
     @Override
     public void mousePressed(MouseEvent me) {
-      
+
     }
 
     @Override
     public void mouseReleased(MouseEvent me) {
-       
+
     }
 
     @Override
     public void mouseEntered(MouseEvent me) {
-       
+
     }
 
     @Override
     public void mouseExited(MouseEvent me) {
-        
+
     }
 
 }

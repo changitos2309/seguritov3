@@ -62,19 +62,20 @@ public final class Controlador_profesional extends javax.swing.JFrame implements
 
         this.Vprofesional = vistaPrincipal;
         UsuarioEmpresaDAO user = new UsuarioEmpresaDAO();
+        this.profesionalDAO = profesionalDAO;
         //Objetos de acceso a datos
        
         this.profesionalDAO =profesionalDAO;
          this.Vprofesional.tabla_profesional.addMouseListener(this);
+         this.Vprofesional.JPMprofesional.addMouseListener(this);
         this.Vprofesional.btn_guardarProfesional.addActionListener(this);
         this.Vprofesional.btn_modificar_profesional.addActionListener(this);
         this.Vprofesional.btn_limpiar_profesional1.addActionListener(this);
         this.Vprofesional.btn_buscar_profesional.addActionListener(this);
         
-llenarprofesional();
+       llenarprofesional();
        llenarCombos();
        llenarArea();
-       
        listarProfesional();
         
        
@@ -129,7 +130,7 @@ private void llenarprofesional() {
                 return;
 
             }
-
+            
             if (Vprofesional.txt_prof_rut.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(Vprofesional, "Debe ingresar del profesional rut", "Error", JOptionPane.ERROR_MESSAGE);
                return;
@@ -154,6 +155,11 @@ private void llenarprofesional() {
                if (!isEmail(Vprofesional.txt_prof_correo.getText())) {
                 JOptionPane.showMessageDialog(Vprofesional, "Debe ingresar un correo valido", "Error", JOptionPane.ERROR_MESSAGE);
                  return;
+            }  
+               if (Vprofesional.cmb_area.getSelectedIndex() == 0) {
+                JOptionPane.showMessageDialog(Vprofesional, "Debe selecionar area profesional", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+
             }
 
             try {
@@ -204,6 +210,7 @@ private void llenarprofesional() {
                 ust.setUser_pass(encriptaEnMD5(pass));
                 ust.setActivo((char) estado);
                 ust.setRol("Profesional");
+                ust.setTelefono(telef_pro);
                 
                  if ( us.crearUsuarioEmpresa(ust)==1) {
                        To = prof_correo;// valor es de prueba valores de prueb
@@ -254,6 +261,11 @@ private void llenarprofesional() {
                if (!isEmail(Vprofesional.txt_prof_correo.getText())) {
                 JOptionPane.showMessageDialog(Vprofesional, "Debe ingresar un correo valido", "Error", JOptionPane.ERROR_MESSAGE);
                  return;
+            }
+                 if (Vprofesional.cmb_area.getSelectedIndex() == 0) {
+                JOptionPane.showMessageDialog(Vprofesional, "Debe selecionar area profesional", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+
             }
             try {
 
@@ -336,6 +348,10 @@ private void llenarprofesional() {
                 }
             }
         }
+ if (e.getSource() == Vprofesional.JPMprofesional) {
+           llenarArea();
+        }
+ 
     }
 
     @Override
@@ -499,10 +515,12 @@ private void llenarprofesional() {
         areaDAO ca = new areaDAO();
         Vprofesional.cmb_area.removeAllItems();
         Vprofesional.cmb_area.removeAllItems();
+        Vprofesional.cmb_area.addItem("sleccione area");
         for (areaDTO a : ca.listarRubros()) {
             Vprofesional.cmb_area.addItem(a.getArea_id()+"-"+a.getArea_detalle());
 
         }
+        
     }
  private void limpiarProfesional() {
         Vprofesional.txt_prof_rut.setText("");

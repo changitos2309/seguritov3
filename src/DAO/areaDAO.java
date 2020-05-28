@@ -125,7 +125,7 @@ public class areaDAO {
                 c.setArea_detalle(rs.getString(2));
                 
             }
-
+                
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "error de base de datos: " + ex);
 

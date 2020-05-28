@@ -39,7 +39,7 @@ public class Controlador_visita extends javax.swing.JFrame implements ActionList
       //private profesionalDAO profesionalDAO;
        VisitaDAO VisitaDAO = new VisitaDAO();
   SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
-  SimpleDateFormat formater = new SimpleDateFormat("HH:mm");
+  //
     public Controlador_visita(JFAdmin vistaPrincipal,VisitaDAO VisitaDAO)  {
       Vvisita = vistaPrincipal;
       this.VisitaDAO = VisitaDAO;
@@ -87,7 +87,7 @@ public class Controlador_visita extends javax.swing.JFrame implements ActionList
                   String  Hora = Vvisita.txt_hora_fecha.getText();
                   String descripcion = Vvisita.txt_visita_descripcion.getText();
                   profesionalDAO p = new profesionalDAO();
-                  profesionalDTO profesional = p.leerProfesional(this.Vvisita.cmb_visita_rofesional.getSelectedItem().toString());
+                  profesionalDTO profesional = p.leerProfesional(this.Vvisita.cmb_visita_rofesional.getSelectedItem().toString().split(" ")[0]);
                   
                   asesoriaDAO as = new asesoriaDAO();
                   asesoriaDTO  ases = as.leerasesoria(Integer.parseInt(this.Vvisita.cmb_visota_ases.getSelectedItem().toString().split("-")[0]));
@@ -103,7 +103,7 @@ public class Controlador_visita extends javax.swing.JFrame implements ActionList
                  visita.setVista_realizada(realizada);
                  visita.setAsesoria(ases);
                  visita.setProfesional(profesional);
-                 
+                System.out.println(profesional);
                  if (vi.crearvisita(visita)==1) {
                      JOptionPane.showMessageDialog(Vvisita, "Se ha creado una visita", "Exito", JOptionPane.INFORMATION_MESSAGE);
                      listarProfesional();
@@ -141,7 +141,7 @@ public class Controlador_visita extends javax.swing.JFrame implements ActionList
                   String  Hora = Vvisita.txt_hora_fecha.getText();
                   String descripcion = Vvisita.txt_visita_descripcion.getText();
                   profesionalDAO p = new profesionalDAO();
-                  profesionalDTO profesional = p.leerProfesional(this.Vvisita.cmb_visita_rofesional.getSelectedItem().toString());
+                  profesionalDTO profesional = p.leerProfesional(this.Vvisita.cmb_visita_rofesional.getSelectedItem().toString().split(" ")[0]);
                   
                   asesoriaDAO as = new asesoriaDAO();
                   asesoriaDTO  ases = as.leerasesoria(Integer.parseInt(this.Vvisita.cmb_visota_ases.getSelectedItem().toString().split("-")[0]));
@@ -157,7 +157,7 @@ public class Controlador_visita extends javax.swing.JFrame implements ActionList
                  visita.setVista_realizada(realizada);
                  visita.setAsesoria(ases);
                  visita.setProfesional(profesional);
-                 
+                 System.out.println(profesional);
                  if (vi.modificarvisita(visita)==1) {
                      JOptionPane.showMessageDialog(Vvisita, "Se ha modificar una visita", "Exito", JOptionPane.INFORMATION_MESSAGE);
                       listarProfesional();
@@ -177,6 +177,10 @@ public class Controlador_visita extends javax.swing.JFrame implements ActionList
         if (ae.getSource()== Vvisita.btn_limpiar_visita) {
             limpiarvisita();
         }
+         if (ae.getSource()== Vvisita.JPMvisita) {
+            llenarasesoria();
+            llenarprofesional();
+        }
     }
 
     private void llenarprofesional() {
@@ -184,7 +188,7 @@ public class Controlador_visita extends javax.swing.JFrame implements ActionList
         Vvisita.cmb_visita_rofesional.removeAllItems();
         Vvisita.cmb_visita_rofesional.removeAllItems();
         for (profesionalDTO a : ca.listarProfesional()) {
-        Vvisita.cmb_visita_rofesional.addItem(a.getProf_rut());
+        Vvisita.cmb_visita_rofesional.addItem(a.getProf_rut()+" "+a.getProf_nombre());
 
         }
     }
@@ -193,7 +197,8 @@ public class Controlador_visita extends javax.swing.JFrame implements ActionList
          asesoriaDAO ca = new asesoriaDAO();
         Vvisita.cmb_visota_ases.removeAllItems();
         Vvisita.cmb_visota_ases.removeAllItems();
-        for (asesoriaDTO a : ca.listarcontrato()) {
+         Vvisita.cmb_visota_ases.addItem("seleccione");
+        for (asesoriaDTO a : ca.listarasesoria()) {
         Vvisita.cmb_visota_ases.addItem(a.getAses_id()+"-"+"Asesoria");
 
         }
@@ -236,7 +241,7 @@ public class Controlador_visita extends javax.swing.JFrame implements ActionList
     }
         public void limpiarvisita(){
             
-             Vvisita.txt_fecha_visita.setDate(null);
+             Vvisita.txt_fecha_visita.setDate(new Date());
                Vvisita.txt_hora_fecha.setText("");
                Vvisita.txt_visita_descripcion.setText("");
                Vvisita.cmb_visita_rofesional.setSelectedIndex(0);
@@ -311,7 +316,7 @@ public class Controlador_visita extends javax.swing.JFrame implements ActionList
             fila[2] = a.getHora_visita();
             fila[3] = a.getVisita_descripcion();
             fila[4] = a.getAsesoria().getAses_id()+"-"+"Asesoria";
-            fila[5] = a.getProfesional().getProf_rut();
+            fila[5] = a.getProfesional().getProf_rut()+" "+a.getProfesional().getProf_nombre();
             
             if ("SI".equals(a.getVista_realizada())) {
                 fila[6] = "SI";

@@ -170,6 +170,8 @@ public class JFAdmin extends javax.swing.JFrame {
         btn_guardaruser = new javax.swing.JButton();
         btn_modificar_user = new javax.swing.JButton();
         btn_limpiar_user = new javax.swing.JButton();
+        txt_user_telefono = new javax.swing.JTextField();
+        jLabel56 = new javax.swing.JLabel();
         JPprofesional = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         txt_prof_rut = new javax.swing.JTextField();
@@ -562,7 +564,6 @@ public class JFAdmin extends javax.swing.JFrame {
         JPmenu.setLayout(JPmenuLayout);
         JPmenuLayout.setHorizontalGroup(
             JPmenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(JPMempersa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(JPMprofesional, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(JPMservicio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -576,7 +577,8 @@ public class JFAdmin extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(JPMvisita, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-            .addComponent(JPMusuario, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+            .addComponent(JPMusuario, javax.swing.GroupLayout.PREFERRED_SIZE, 180, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         JPmenuLayout.setVerticalGroup(
             JPmenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1462,6 +1464,9 @@ public class JFAdmin extends javax.swing.JFrame {
         btn_limpiar_user.setForeground(new java.awt.Color(255, 255, 255));
         btn_limpiar_user.setText("Limpiar");
 
+        jLabel56.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel56.setText("telefono");
+
         javax.swing.GroupLayout JPusuarioLayout = new javax.swing.GroupLayout(JPusuario);
         JPusuario.setLayout(JPusuarioLayout);
         JPusuarioLayout.setHorizontalGroup(
@@ -1471,15 +1476,21 @@ public class JFAdmin extends javax.swing.JFrame {
                 .addGroup(JPusuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 727, Short.MAX_VALUE)
                     .addGroup(JPusuarioLayout.createSequentialGroup()
-                        .addGroup(JPusuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel40)
-                            .addComponent(jLabel41)
-                            .addComponent(jLabel42))
-                        .addGap(13, 13, 13)
+                        .addGroup(JPusuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(JPusuarioLayout.createSequentialGroup()
+                                .addGroup(JPusuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel40)
+                                    .addComponent(jLabel41)
+                                    .addComponent(jLabel42))
+                                .addGap(13, 13, 13))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPusuarioLayout.createSequentialGroup()
+                                .addComponent(jLabel56)
+                                .addGap(18, 18, 18)))
                         .addGroup(JPusuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txt_apell_user, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+                            .addComponent(txt_user_telefono)
+                            .addComponent(txt_apell_user)
                             .addComponent(txt_nombre_user)
-                            .addComponent(txt_rut_user))
+                            .addComponent(txt_rut_user, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(JPusuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPusuarioLayout.createSequentialGroup()
@@ -1505,33 +1516,40 @@ public class JFAdmin extends javax.swing.JFrame {
         JPusuarioLayout.setVerticalGroup(
             JPusuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(JPusuarioLayout.createSequentialGroup()
-                .addGap(31, 31, 31)
                 .addGroup(JPusuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(JPusuarioLayout.createSequentialGroup()
-                        .addGroup(JPusuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_rut_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, JPusuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel43)
-                                .addComponent(txt_correo_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(31, 31, 31)
+                        .addGroup(JPusuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel43)
+                            .addComponent(txt_correo_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(JPusuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_nombre_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(JPusuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel44)
-                                .addComponent(cmb_user_empresa, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(JPusuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel44)
+                            .addComponent(cmb_user_empresa, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(JPusuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cmb_user_estado, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel45)))
                     .addGroup(JPusuarioLayout.createSequentialGroup()
-                        .addComponent(jLabel40)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel41)
-                        .addGap(35, 35, 35)
+                        .addContainerGap()
+                        .addGroup(JPusuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(JPusuarioLayout.createSequentialGroup()
+                                .addComponent(txt_rut_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txt_nombre_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(JPusuarioLayout.createSequentialGroup()
+                                .addComponent(jLabel40)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel41)
+                                .addGap(35, 35, 35)
+                                .addGroup(JPusuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel42)
+                                    .addComponent(txt_apell_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(JPusuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel42)
-                            .addComponent(txt_apell_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                            .addComponent(txt_user_telefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel56))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addGroup(JPusuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(JPusuarioLayout.createSequentialGroup()
@@ -2086,13 +2104,13 @@ public class JFAdmin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel JPMcontrato;
+    public javax.swing.JPanel JPMcontrato;
     private javax.swing.JPanel JPMempersa;
     private javax.swing.JPanel JPMprofesion;
-    private javax.swing.JPanel JPMprofesional;
+    public javax.swing.JPanel JPMprofesional;
     private javax.swing.JPanel JPMservicio;
-    private javax.swing.JPanel JPMusuario;
-    private javax.swing.JPanel JPMvisita;
+    public javax.swing.JPanel JPMusuario;
+    public javax.swing.JPanel JPMvisita;
     private javax.swing.JPanel JPcerrarsesion;
     private javax.swing.JPanel JPcontrato;
     private javax.swing.JPanel JPempresa;
@@ -2194,6 +2212,7 @@ public class JFAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel53;
     private javax.swing.JLabel jLabel54;
     private javax.swing.JLabel jLabel55;
+    private javax.swing.JLabel jLabel56;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -2243,6 +2262,7 @@ public class JFAdmin extends javax.swing.JFrame {
     public javax.swing.JTextField txt_servicio_nombre;
     public javax.swing.JTextField txt_servicio_valor;
     public javax.swing.JTextField txt_telefono_empresa;
+    public javax.swing.JTextField txt_user_telefono;
     public javax.swing.JTextArea txt_visita_descripcion;
     // End of variables declaration//GEN-END:variables
 

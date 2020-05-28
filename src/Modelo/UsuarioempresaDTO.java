@@ -18,8 +18,9 @@ public class UsuarioempresaDTO {
     char activo;
     EmpresaDTO empresa;
     String rol;
+    String telefono;
 
-    public UsuarioempresaDTO(String user_rut, String user_name, String user_correo, String user_pass, char activo, EmpresaDTO empresa, String rol) {
+    public UsuarioempresaDTO(String user_rut, String user_name, String user_correo, String user_pass, char activo, EmpresaDTO empresa, String rol, String telefono) {
         this.user_rut = user_rut;
         this.user_name = user_name;
         this.user_correo = user_correo;
@@ -27,6 +28,17 @@ public class UsuarioempresaDTO {
         this.activo = activo;
         this.empresa = empresa;
         this.rol = rol;
+        this.telefono = telefono;
+    }
+
+   
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public UsuarioempresaDTO() {

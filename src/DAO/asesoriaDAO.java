@@ -84,7 +84,7 @@ public class asesoriaDAO {
         return resultado;
     }
      
-      public List<asesoriaDTO> listarcontrato() {
+      public List<asesoriaDTO> listarasesoria() {
         Connection dbConnection;
         CallableStatement callableStatement;
         ResultSet rs;

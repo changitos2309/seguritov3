@@ -254,15 +254,15 @@ public class Controlador_Empresa extends javax.swing.JFrame implements ActionLis
                 empresa.setEmpTrabajadores(canttrabajadores);
 
                 if (ce.ModificarEmpresa(empresa) == 1) {
-                    JOptionPane.showMessageDialog(vistaPrincipal, "Se ha creado una empresa", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(vistaPrincipal, "Se ha modificado una empresa", "Exito", JOptionPane.INFORMATION_MESSAGE);
 
                     listarEmpresa();
                 } else {
-                    JOptionPane.showMessageDialog(vistaPrincipal, "No se ha podido agregar empresa", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(vistaPrincipal, "No se ha podido modidicar la empresa", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(Controlador_Empresa.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(vistaPrincipal, "No se ha podido registrar empresa", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(vistaPrincipal, "No se ha podido modificar empresa", "Error", JOptionPane.ERROR_MESSAGE);
             }
 
         } else if (e.getSource() == vistaPrincipal.btn_limpiarContrato1) {

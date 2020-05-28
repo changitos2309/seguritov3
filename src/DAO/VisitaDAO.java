@@ -36,7 +36,7 @@ public class VisitaDAO {
             dbConnection = Conexion.getConnection();
             callableStatement = dbConnection.prepareCall(crearsql);
             DateFormat oDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            DateFormat oDateFormatt = new SimpleDateFormat("HH:mm");
+           
             callableStatement.setInt(1, visita.getId_vista());
             String fecha_visita = oDateFormat.format(visita.getFecha_visita());
             callableStatement.setString(2,fecha_visita );
@@ -45,7 +45,7 @@ public class VisitaDAO {
             callableStatement.setString(5,visita.getVista_realizada() );
             callableStatement.setInt(6,  visita.getAsesoria().getAses_id());
             callableStatement.setString(7, visita.getProfesional().getProf_rut());
-           
+            
 
             // execute getDBUSERCursor store procedure
             int rowsInserted = callableStatement.executeUpdate();
